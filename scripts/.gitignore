@@ -1,0 +1,5 @@
+# Ignore Google Credentials
+*.json
+# Ignore Python cache
+__pycache__/
+*.pyc
