@@ -1,0 +1,297 @@
+Unique_ID,Accession,Organism,Type,Length,File_Reference,Source_URL,Country
+AL_3255237198,3255237198,Escherichia coli,Genomic DNA,830,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3255237198,Algeria
+BO_2986924590,2986924590,Escherichia coli,Genomic DNA,1217,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2986924590,Botswana
+CH_2030352158,2030352158,Escherichia coli,WGS,5732,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2030352158,Chad
+EG_3259324276,3259324276,Escherichia coli,Genomic DNA,807,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3259324276,Egypt
+GU_2055039131,2055039131,Escherichia coli,Plasmid,62666,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2055039131,Guinea-bissau
+LI_2973300907,2973300907,Escherichia coli,Genomic DNA,831,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2973300907,Libya
+MA_3261057126,3261057126,Escherichia coli,WGS,215319,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3261057126,Mali
+NI_3258523615,3258523615,Escherichia coli,Genomic DNA,1338,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3258523615,Nigeria
+AL_1899283875,1899283875,Clostridium,Genomic DNA,1331,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1899283875,Algeria
+BE_1969412605,1969412605,Clostridium,Genomic DNA,1282,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1969412605,Benin
+BU_29378389,29378389,Clostridium,Genomic DNA,1316,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/29378389,Burkina faso
+CH_33173,33173,Clostridium,Genomic DNA,381,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/33173,Chad
+CH_13295777,13295777,Clostridium,Genomic DNA,863,plas_kmer_sequences.fasta,https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=13295777,Chad
+DE_38179434,38179434,Clostridium,Plasmid,561,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/biosample/38179434,Democratic republic of the congo
+EG_7749365,7749365,Clostridium,Genomic DNA,409,plas_kmer_sequences.fasta,https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=7749365,Egypt
+EG_3140610920,3140610920,Clostridium,Genomic DNA,389,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3140610920,Egypt
+ET_13102535,13102535,Clostridium,Genomic DNA,450,plas_kmer_sequences.fasta,https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=13102535,Ethiopia
+GA_38175168,38175168,Clostridium,Genomic DNA,687,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/biosample/38175168,Gabon
+GH_473419,473419,Clostridium,Genomic DNA,1614,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/473419,Ghana
+GU_25696945,25696945,Clostridium,WGS,10274,plas_kmer_sequences.fasta,https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=25696945,Guinea
+IV_313585701,313585701,Clostridium,Genomic DNA,1341,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/313585701,Ivory coast
+KE_981054,981054,Clostridium,Genomic DNA,315,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/981054,Kenya
+KE_25696853,25696853,Clostridium,WGS,7644,plas_kmer_sequences.fasta,https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=25696853,Kenya
+KE_2648380398,2648380398,Clostridium,Genomic DNA,257,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2648380398,Kenya
+LI_576756033,576756033,Clostridium,Genomic DNA,1210,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/576756033,Libya
+MA_1849633193,1849633193,Clostridium,WGS,1583827,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1849633193,Mali
+MA_302039,302039,Clostridium,Genomic DNA,1172,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/302039,Mauritius
+MA_7749087,7749087,Clostridium,Genomic DNA,422,plas_kmer_sequences.fasta,https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=7749087,Mauritius
+MA_1324265996,1324265996,Clostridium,Genomic DNA,3973562,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1324265996,Mauritius
+NA_1373434783,1373434783,Clostridium,Genomic DNA,275,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1373434783,Namibia
+NI_3138339265,3138339265,Clostridium,Genomic DNA,1515,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3138339265,Nigeria
+SE_4669970,4669970,Clostridium,Genomic DNA,467,plas_kmer_sequences.fasta,https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=4669970,Senegal
+SO_1134424,1134424,Clostridium,Genomic DNA,248,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/1134424,South africa
+SO_27951161,27951161,Clostridium,Genomic DNA,80,plas_kmer_sequences.fasta,https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=27951161,South africa
+TA_693303056,693303056,Clostridium,Genomic DNA,911,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/693303056,Tanzania
+TO_930425276,930425276,Clostridium,Genomic DNA,1514,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/930425276,Togo
+TU_2254962793,2254962793,Clostridium,Genomic DNA,448,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2254962793,Tunisia
+UG_7749427,7749427,Clostridium,Genomic DNA,239,plas_kmer_sequences.fasta,https://trace.ncbi.nlm.nih.gov/Traces/sra/?run=7749427,Uganda
+AL_2450273520,2450273520,klebsiella pneumoniae,Plasmid,39811,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2450273520,Algeria
+AL_2450273267,2450273267,klebsiella pneumoniae,Plasmid,5980,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2450273267,Algeria
+AL_2450273266,2450273266,klebsiella pneumoniae,Plasmid,6207,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2450273266,Algeria
+AL_2450273243,2450273243,klebsiella pneumoniae,Plasmid,43867,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2450273243,Algeria
+AL_2450255702,2450255702,klebsiella pneumoniae,Plasmid,3685,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2450255702,Algeria
+AL_2450255638,2450255638,klebsiella pneumoniae,Plasmid,5980,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2450255638,Algeria
+AL_2450255632,2450255632,klebsiella pneumoniae,Plasmid,6207,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2450255632,Algeria
+AL_2450255299,2450255299,klebsiella pneumoniae,Plasmid,44467,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2450255299,Algeria
+AL_1680358529,1680358529,klebsiella pneumoniae,Plasmid,516,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1680358529,Algeria
+BE_46224882,46224882,klebsiella pneumoniae,Plasmid,416,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/biosample/46224882,Benin
+BE_46220802,46220802,klebsiella pneumoniae,Plasmid,448,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/biosample/46220802,Benin
+BO_810075,810075,klebsiella pneumoniae,Genomic DNA,461,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/810075,Botswana
+BO_3258744149,3258744149,klebsiella pneumoniae,Plasmid,17509,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3258744149,Botswana
+BO_3258744031,3258744031,klebsiella pneumoniae,Plasmid,6978,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3258744031,Botswana
+BO_3258743931,3258743931,klebsiella pneumoniae,Plasmid,57671,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3258743931,Botswana
+BO_3258743056,3258743056,klebsiella pneumoniae,Plasmid,104649,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3258743056,Botswana
+BO_3258742305,3258742305,klebsiella pneumoniae,Plasmid,38395,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3258742305,Botswana
+BO_3258741849,3258741849,klebsiella pneumoniae,Plasmid,57102,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3258741849,Botswana
+BO_3258741501,3258741501,klebsiella pneumoniae,Plasmid,9060,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3258741501,Botswana
+BO_3258741474,3258741474,klebsiella pneumoniae,Plasmid,171114,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3258741474,Botswana
+BO_3258741473,3258741473,klebsiella pneumoniae,Plasmid,180014,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3258741473,Botswana
+BO_3258739936,3258739936,klebsiella pneumoniae,Plasmid,17357,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3258739936,Botswana
+CA_3179818205,3179818205,klebsiella pneumoniae,Plasmid,31276,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179818205,Cameroon
+CA_3179818200,3179818200,klebsiella pneumoniae,Plasmid,53034,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179818200,Cameroon
+CA_3179817370,3179817370,klebsiella pneumoniae,Plasmid,28872,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179817370,Cameroon
+CA_3179817363,3179817363,klebsiella pneumoniae,Plasmid,38052,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179817363,Cameroon
+CA_3179816061,3179816061,klebsiella pneumoniae,Plasmid,16229,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179816061,Cameroon
+CA_3179815456,3179815456,klebsiella pneumoniae,Plasmid,8273,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179815456,Cameroon
+CA_3179815426,3179815426,klebsiella pneumoniae,Plasmid,44506,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179815426,Cameroon
+CA_3179814070,3179814070,klebsiella pneumoniae,Plasmid,49404,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179814070,Cameroon
+CA_3179813360,3179813360,klebsiella pneumoniae,Plasmid,192306,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179813360,Cameroon
+CA_3179809916,3179809916,klebsiella pneumoniae,Plasmid,43929,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179809916,Cameroon
+CE_3179800316,3179800316,klebsiella pneumoniae,Plasmid,14001,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179800316,Central african republic
+CE_3179767966,3179767966,klebsiella pneumoniae,Plasmid,18072,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179767966,Central african republic
+CE_3179767946,3179767946,klebsiella pneumoniae,Plasmid,51816,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179767946,Central african republic
+CE_3179761058,3179761058,klebsiella pneumoniae,Plasmid,4042,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179761058,Central african republic
+EG_1624602783,1624602783,klebsiella pneumoniae,Plasmid,8168,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1624602783,Egypt
+EG_1624602728,1624602728,klebsiella pneumoniae,Plasmid,22325,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1624602728,Egypt
+EG_1624602689,1624602689,klebsiella pneumoniae,Plasmid,47696,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1624602689,Egypt
+EG_2018112843,2018112843,klebsiella pneumoniae,Plasmid,2173,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2018112843,Egypt
+EG_1624637081,1624637081,klebsiella pneumoniae,Plasmid,40631,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1624637081,Egypt
+EG_1624637046,1624637046,klebsiella pneumoniae,Plasmid,60628,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1624637046,Egypt
+EG_1624636436,1624636436,klebsiella pneumoniae,Plasmid,7718,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1624636436,Egypt
+EG_1624636416,1624636416,klebsiella pneumoniae,Plasmid,42080,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1624636416,Egypt
+EG_1624627144,1624627144,klebsiella pneumoniae,Plasmid,44436,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1624627144,Egypt
+EG_1624627138,1624627138,klebsiella pneumoniae,Plasmid,60657,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1624627138,Egypt
+ET_3174340230,3174340230,klebsiella pneumoniae,WGS,5453024,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3174340230,Ethiopia
+ET_3174327909,3174327909,klebsiella pneumoniae,WGS,1022986,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3174327909,Ethiopia
+ET_3174323760,3174323760,klebsiella pneumoniae,WGS,3520496,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3174323760,Ethiopia
+ET_3174320097,3174320097,klebsiella pneumoniae,WGS,5338840,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3174320097,Ethiopia
+ET_3174315865,3174315865,klebsiella pneumoniae,Plasmid,463330,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3174315865,Ethiopia
+ET_3174315703,3174315703,klebsiella pneumoniae,WGS,2319759,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3174315703,Ethiopia
+ET_3174304911,3174304911,klebsiella pneumoniae,Plasmid,236989,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3174304911,Ethiopia
+ET_3174302807,3174302807,klebsiella pneumoniae,Plasmid,12030,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3174302807,Ethiopia
+ET_3174302786,3174302786,klebsiella pneumoniae,Plasmid,446868,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3174302786,Ethiopia
+ET_3174302215,3174302215,klebsiella pneumoniae,Plasmid,234163,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3174302215,Ethiopia
+GA_1587049809,1587049809,klebsiella pneumoniae,Plasmid,143,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1587049809,Gabon
+GA_1587049807,1587049807,klebsiella pneumoniae,Plasmid,143,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1587049807,Gabon
+GA_1587049805,1587049805,klebsiella pneumoniae,Plasmid,143,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1587049805,Gabon
+GA_1584351943,1584351943,klebsiella pneumoniae,Plasmid,885,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1584351943,Gabon
+GA_1584351941,1584351941,klebsiella pneumoniae,Plasmid,831,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1584351941,Gabon
+GA_1584351939,1584351939,klebsiella pneumoniae,Plasmid,885,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1584351939,Gabon
+GA_1584351937,1584351937,klebsiella pneumoniae,Plasmid,885,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1584351937,Gabon
+GA_370981692,370981692,klebsiella pneumoniae,Plasmid,1131,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/370981692,Gabon
+GA_370981682,370981682,klebsiella pneumoniae,Plasmid,814,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/370981682,Gabon
+GA_3249012062,3249012062,klebsiella pneumoniae,Plasmid,67833,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3249012062,Gambia
+GA_3196066601,3196066601,klebsiella pneumoniae,Plasmid,67833,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3196066601,Gambia
+GA_3196066340,3196066340,klebsiella pneumoniae,Plasmid,189764,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3196066340,Gambia
+GA_3135312183,3135312183,klebsiella pneumoniae,WGS,5453859,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3135312183,Gambia
+GA_3133975588,3133975588,klebsiella pneumoniae,WGS,5453859,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3133975588,Gambia
+GH_822931,822931,klebsiella pneumoniae,Genomic DNA,316,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/822931,Ghana
+GH_1449729254,1449729254,klebsiella pneumoniae,Plasmid,6643,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1449729254,Ghana
+GH_1449729247,1449729247,klebsiella pneumoniae,Plasmid,20842,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1449729247,Ghana
+GH_2988543786,2988543786,klebsiella pneumoniae,Plasmid,5165,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2988543786,Ghana
+GH_2988543760,2988543760,klebsiella pneumoniae,Plasmid,41104,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2988543760,Ghana
+GH_2988543759,2988543759,klebsiella pneumoniae,Plasmid,46755,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2988543759,Ghana
+GH_2988543757,2988543757,klebsiella pneumoniae,Plasmid,68603,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2988543757,Ghana
+GH_3140802161,3140802161,klebsiella pneumoniae,Plasmid,62231,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3140802161,Ghana
+GH_3140785790,3140785790,klebsiella pneumoniae,Plasmid,83028,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3140785790,Ghana
+GH_3112811589,3112811589,klebsiella pneumoniae,Plasmid,6823,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3112811589,Ghana
+GH_3112811562,3112811562,klebsiella pneumoniae,Plasmid,384827,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3112811562,Ghana
+GU_1344438970,1344438970,klebsiella pneumoniae,Plasmid,8186,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1344438970,Guinea
+GU_1344438767,1344438767,klebsiella pneumoniae,Plasmid,7142,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1344438767,Guinea
+GU_1344402811,1344402811,klebsiella pneumoniae,Plasmid,594,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1344402811,Guinea
+GU_1344402749,1344402749,klebsiella pneumoniae,Plasmid,5019,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1344402749,Guinea
+GU_1344402810,1344402810,klebsiella pneumoniae,Plasmid,633,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1344402810,Guinea
+KE_1306555,1306555,klebsiella pneumoniae,Genomic DNA,553,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/1306555,Kenya
+KE_14226090,14226090,klebsiella pneumoniae,Plasmid,1857,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/biosample/14226090,Kenya
+KE_1888281736,1888281736,klebsiella pneumoniae,Plasmid,4956,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1888281736,Kenya
+KE_1888281717,1888281717,klebsiella pneumoniae,Plasmid,21642,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1888281717,Kenya
+KE_410656048,410656048,klebsiella pneumoniae,Plasmid,165070,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/410656048,Kenya
+KE_2295939359,2295939359,klebsiella pneumoniae,Plasmid,6820,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2295939359,Kenya
+KE_2295939257,2295939257,klebsiella pneumoniae,Plasmid,31701,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2295939257,Kenya
+KE_2295937525,2295937525,klebsiella pneumoniae,Plasmid,6818,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2295937525,Kenya
+KE_3023634979,3023634979,klebsiella pneumoniae,Plasmid,246,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3023634979,Kenya
+KE_3023634190,3023634190,klebsiella pneumoniae,Plasmid,122275,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3023634190,Kenya
+KE_3023624603,3023624603,klebsiella pneumoniae,Plasmid,4440,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3023624603,Kenya
+KE_3023623209,3023623209,klebsiella pneumoniae,Plasmid,246,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3023623209,Kenya
+LI_573007,573007,klebsiella pneumoniae,Genomic DNA,320,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/573007,Libya
+LI_2644655224,2644655224,klebsiella pneumoniae,Plasmid,53753,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2644655224,Libya
+LI_2644651551,2644651551,klebsiella pneumoniae,Plasmid,130739,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2644651551,Libya
+LI_2644651549,2644651549,klebsiella pneumoniae,Plasmid,302475,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2644651549,Libya
+LI_2644651344,2644651344,klebsiella pneumoniae,Plasmid,41330,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2644651344,Libya
+LI_2644651265,2644651265,klebsiella pneumoniae,Plasmid,212414,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2644651265,Libya
+LI_2644646258,2644646258,klebsiella pneumoniae,Plasmid,89974,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2644646258,Libya
+LI_2644642297,2644642297,klebsiella pneumoniae,Plasmid,19476,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2644642297,Libya
+LI_2644642194,2644642194,klebsiella pneumoniae,Plasmid,44505,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2644642194,Libya
+LI_2644634139,2644634139,klebsiella pneumoniae,Plasmid,46586,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2644634139,Libya
+LI_2644633983,2644633983,klebsiella pneumoniae,Plasmid,213025,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2644633983,Libya
+MA_1918137045,1918137045,klebsiella pneumoniae,Plasmid,5756,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1918137045,Madagascar
+MA_1918129184,1918129184,klebsiella pneumoniae,Plasmid,28504,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1918129184,Madagascar
+MA_3179816821,3179816821,klebsiella pneumoniae,Plasmid,52789,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179816821,Madagascar
+MA_3179814678,3179814678,klebsiella pneumoniae,Plasmid,6094,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179814678,Madagascar
+MA_3179814663,3179814663,klebsiella pneumoniae,Plasmid,96930,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179814663,Madagascar
+MA_3179814620,3179814620,klebsiella pneumoniae,Plasmid,397484,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179814620,Madagascar
+MA_3179812571,3179812571,klebsiella pneumoniae,Plasmid,28922,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179812571,Madagascar
+MA_3179812564,3179812564,klebsiella pneumoniae,Plasmid,39170,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179812564,Madagascar
+MA_3179807969,3179807969,klebsiella pneumoniae,Plasmid,28785,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179807969,Madagascar
+MA_3179807254,3179807254,klebsiella pneumoniae,Plasmid,2124,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3179807254,Madagascar
+MA_635644,635644,klebsiella pneumoniae,Genomic DNA,571,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/635644,Malawi
+MA_3126526643,3126526643,klebsiella pneumoniae,Genomic DNA,5611508,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3126526643,Malawi
+MA_3126526642,3126526642,klebsiella pneumoniae,Plasmid,7751,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3126526642,Malawi
+MA_3126526641,3126526641,klebsiella pneumoniae,Plasmid,8256,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3126526641,Malawi
+MA_3126526640,3126526640,klebsiella pneumoniae,Plasmid,195952,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3126526640,Malawi
+MA_3126526639,3126526639,klebsiella pneumoniae,Genomic DNA,5611508,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3126526639,Malawi
+MA_3126526638,3126526638,klebsiella pneumoniae,Plasmid,7751,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3126526638,Malawi
+MA_3126526637,3126526637,klebsiella pneumoniae,Plasmid,195952,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3126526637,Malawi
+MA_3126526635,3126526635,klebsiella pneumoniae,Plasmid,4407,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3126526635,Malawi
+MA_3126526634,3126526634,klebsiella pneumoniae,Plasmid,56321,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3126526634,Malawi
+MA_3126526633,3126526633,klebsiella pneumoniae,Plasmid,146190,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3126526633,Malawi
+MO_2469834473,2469834473,klebsiella pneumoniae,Plasmid,18085,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2469834473,Morocco
+MO_2469834284,2469834284,klebsiella pneumoniae,Plasmid,12407,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2469834284,Morocco
+MO_2469833934,2469833934,klebsiella pneumoniae,Plasmid,9157,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2469833934,Morocco
+MO_2469833811,2469833811,klebsiella pneumoniae,Plasmid,14475,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2469833811,Morocco
+MO_2470085014,2470085014,klebsiella pneumoniae,Plasmid,5222,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2470085014,Morocco
+MO_2470084103,2470084103,klebsiella pneumoniae,Plasmid,31212,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2470084103,Morocco
+MO_2469884686,2469884686,klebsiella pneumoniae,Plasmid,41460,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2469884686,Morocco
+MO_3200273864,3200273864,klebsiella pneumoniae,Plasmid,22344,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3200273864,Morocco
+MO_3200273854,3200273854,klebsiella pneumoniae,Plasmid,38645,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3200273854,Morocco
+MO_3200273853,3200273853,klebsiella pneumoniae,Plasmid,39464,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3200273853,Morocco
+NI_3136550551,3136550551,klebsiella pneumoniae,Plasmid,43253,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3136550551,Niger
+NI_3136532178,3136532178,klebsiella pneumoniae,Plasmid,43253,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3136532178,Niger
+NI_3128971801,3128971801,klebsiella pneumoniae,Plasmid,66462,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3128971801,Niger
+NI_3128971796,3128971796,klebsiella pneumoniae,Plasmid,319659,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3128971796,Niger
+NI_3128971642,3128971642,klebsiella pneumoniae,Plasmid,41014,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3128971642,Niger
+NI_3128947027,3128947027,klebsiella pneumoniae,Plasmid,41105,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3128947027,Niger
+NI_3128946655,3128946655,klebsiella pneumoniae,Plasmid,41105,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3128946655,Niger
+NI_3128915493,3128915493,klebsiella pneumoniae,Plasmid,41105,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3128915493,Niger
+NI_1397606604,1397606604,klebsiella pneumoniae,Plasmid,856,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1397606604,Niger
+NI_1397606599,1397606599,klebsiella pneumoniae,Plasmid,947,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1397606599,Niger
+NI_3260678277,3260678277,klebsiella pneumoniae,Plasmid,204452,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3260678277,Nigeria
+NI_2314546848,2314546848,klebsiella pneumoniae,Plasmid,58281,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2314546848,Nigeria
+NI_3136106397,3136106397,klebsiella pneumoniae,Plasmid,43092,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3136106397,Nigeria
+NI_3136106380,3136106380,klebsiella pneumoniae,Plasmid,249186,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3136106380,Nigeria
+NI_3136106072,3136106072,klebsiella pneumoniae,Plasmid,5370,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3136106072,Nigeria
+NI_3136106070,3136106070,klebsiella pneumoniae,Plasmid,5777,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3136106070,Nigeria
+NI_3136106042,3136106042,klebsiella pneumoniae,Plasmid,41326,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3136106042,Nigeria
+NI_3136105038,3136105038,klebsiella pneumoniae,Plasmid,184368,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3136105038,Nigeria
+NI_3136105037,3136105037,klebsiella pneumoniae,Plasmid,226398,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3136105037,Nigeria
+NI_3136095698,3136095698,klebsiella pneumoniae,Plasmid,596,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3136095698,Nigeria
+RW_2605038934,2605038934,klebsiella pneumoniae,Plasmid,87561,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2605038934,Rwanda
+SE_1377136,1377136,klebsiella pneumoniae,Genomic DNA,424,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/1377136,Senegal
+SE_988069,988069,klebsiella pneumoniae,Genomic DNA,333,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/988069,Senegal
+SE_3198626797,3198626797,klebsiella pneumoniae,Plasmid,38435,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3198626797,Senegal
+SE_3198626790,3198626790,klebsiella pneumoniae,Plasmid,60589,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3198626790,Senegal
+SE_3198625451,3198625451,klebsiella pneumoniae,Plasmid,10869,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3198625451,Senegal
+SE_3198623808,3198623808,klebsiella pneumoniae,Plasmid,7002,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3198623808,Senegal
+SE_3198623673,3198623673,klebsiella pneumoniae,Plasmid,17020,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3198623673,Senegal
+SE_3198623513,3198623513,klebsiella pneumoniae,Plasmid,85918,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3198623513,Senegal
+SE_3198623507,3198623507,klebsiella pneumoniae,Plasmid,117468,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3198623507,Senegal
+SE_3198619815,3198619815,klebsiella pneumoniae,Plasmid,210,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3198619815,Senegal
+SE_3198618641,3198618641,klebsiella pneumoniae,Plasmid,6793,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3198618641,Senegal
+SE_3198612034,3198612034,klebsiella pneumoniae,Plasmid,25293,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3198612034,Senegal
+SO_902310,902310,klebsiella pneumoniae,Genomic DNA,768,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/902310,South africa
+SO_488070,488070,klebsiella pneumoniae,Genomic DNA,754,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/488070,South africa
+SO_2180274993,2180274993,klebsiella pneumoniae,Plasmid,56571,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2180274993,South africa
+SO_2051211085,2051211085,klebsiella pneumoniae,Plasmid,7523,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2051211085,South africa
+SO_2051210992,2051210992,klebsiella pneumoniae,Plasmid,49779,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2051210992,South africa
+SO_2051209609,2051209609,klebsiella pneumoniae,Plasmid,6189,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2051209609,South africa
+SO_2051208943,2051208943,klebsiella pneumoniae,Plasmid,126132,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2051208943,South africa
+SO_2051208693,2051208693,klebsiella pneumoniae,Plasmid,275575,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2051208693,South africa
+SO_2843617230,2843617230,klebsiella pneumoniae,Plasmid,8145,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2843617230,South africa
+SO_2843617202,2843617202,klebsiella pneumoniae,Plasmid,41449,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2843617202,South africa
+SO_2843615529,2843615529,klebsiella pneumoniae,Plasmid,29741,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2843615529,South africa
+SO_1048204471,1048204471,klebsiella pneumoniae,Plasmid,4238,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1048204471,South africa
+SU_2205725808,2205725808,klebsiella pneumoniae,Plasmid,58570,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2205725808,Sudan
+SU_2205725464,2205725464,klebsiella pneumoniae,Plasmid,262430,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2205725464,Sudan
+SU_1615117928,1615117928,klebsiella pneumoniae,Plasmid,55466,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1615117928,Sudan
+SU_1615117923,1615117923,klebsiella pneumoniae,Plasmid,64526,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1615117923,Sudan
+SU_2189546864,2189546864,klebsiella pneumoniae,Plasmid,4614,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2189546864,Sudan
+SU_2207344647,2207344647,klebsiella pneumoniae,Plasmid,5854599,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2207344647,Sudan
+SU_2206056503,2206056503,klebsiella pneumoniae,Plasmid,5852759,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2206056503,Sudan
+SU_2206008362,2206008362,klebsiella pneumoniae,Plasmid,5753908,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2206008362,Sudan
+SU_2205997849,2205997849,klebsiella pneumoniae,Plasmid,5779376,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2205997849,Sudan
+SU_2205990093,2205990093,klebsiella pneumoniae,Plasmid,5784165,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2205990093,Sudan
+TA_1241466,1241466,klebsiella pneumoniae,Genomic DNA,122,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/1241466,Tanzania
+TA_503964,503964,klebsiella pneumoniae,Genomic DNA,432,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/503964,Tanzania
+TA_3140018509,3140018509,klebsiella pneumoniae,Plasmid,65051,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3140018509,Tanzania
+TA_3140018508,3140018508,klebsiella pneumoniae,Plasmid,113132,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3140018508,Tanzania
+TA_3140018503,3140018503,klebsiella pneumoniae,WGS,5311602,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3140018503,Tanzania
+TA_3140010360,3140010360,klebsiella pneumoniae,Plasmid,4224,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3140010360,Tanzania
+TA_3140010358,3140010358,klebsiella pneumoniae,Plasmid,5695,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3140010358,Tanzania
+TA_3140010357,3140010357,klebsiella pneumoniae,Plasmid,6310,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3140010357,Tanzania
+TA_3140010356,3140010356,klebsiella pneumoniae,Plasmid,218552,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3140010356,Tanzania
+TA_3140010341,3140010341,klebsiella pneumoniae,WGS,5457227,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3140010341,Tanzania
+TA_3139043465,3139043465,klebsiella pneumoniae,WGS,5457227,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3139043465,Tanzania
+TA_3139043439,3139043439,klebsiella pneumoniae,WGS,5311602,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3139043439,Tanzania
+TO_1492841975,1492841975,klebsiella pneumoniae,Plasmid,747,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1492841975,Togo
+TO_1492841805,1492841805,klebsiella pneumoniae,Plasmid,1474,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1492841805,Togo
+TO_1492841602,1492841602,klebsiella pneumoniae,Plasmid,918,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1492841602,Togo
+TO_1491358218,1491358218,klebsiella pneumoniae,Plasmid,42427,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1491358218,Togo
+TO_1491356402,1491356402,klebsiella pneumoniae,Plasmid,111016,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1491356402,Togo
+TO_1491355277,1491355277,klebsiella pneumoniae,Plasmid,74472,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1491355277,Togo
+TO_1491354943,1491354943,klebsiella pneumoniae,Plasmid,4574,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1491354943,Togo
+TO_1491354936,1491354936,klebsiella pneumoniae,Plasmid,4222,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1491354936,Togo
+TO_1491354866,1491354866,klebsiella pneumoniae,Plasmid,5274,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1491354866,Togo
+TO_1491354158,1491354158,klebsiella pneumoniae,Plasmid,8729,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1491354158,Togo
+TU_1356244,1356244,klebsiella pneumoniae,Genomic DNA,144,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/1356244,Tunisia
+TU_3259089092,3259089092,klebsiella pneumoniae,Plasmid,15640,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3259089092,Tunisia
+TU_3259089079,3259089079,klebsiella pneumoniae,Plasmid,15108,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3259089079,Tunisia
+TU_3259089050,3259089050,klebsiella pneumoniae,Plasmid,39638,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3259089050,Tunisia
+TU_3259087761,3259087761,klebsiella pneumoniae,Plasmid,5363,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3259087761,Tunisia
+TU_3259087754,3259087754,klebsiella pneumoniae,Plasmid,13983,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3259087754,Tunisia
+TU_3259087697,3259087697,klebsiella pneumoniae,Plasmid,35091,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3259087697,Tunisia
+TU_3259087372,3259087372,klebsiella pneumoniae,Plasmid,15808,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3259087372,Tunisia
+TU_3259087362,3259087362,klebsiella pneumoniae,Plasmid,20975,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3259087362,Tunisia
+TU_3259087330,3259087330,klebsiella pneumoniae,Plasmid,57175,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3259087330,Tunisia
+TU_3259086957,3259086957,klebsiella pneumoniae,Plasmid,14260,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3259086957,Tunisia
+UG_985213,985213,klebsiella pneumoniae,Genomic DNA,359,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/bioproject/985213,Uganda
+UG_1603896596,1603896596,klebsiella pneumoniae,Plasmid,57821,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1603896596,Uganda
+UG_1603896482,1603896482,klebsiella pneumoniae,Plasmid,183849,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1603896482,Uganda
+UG_1603896462,1603896462,klebsiella pneumoniae,Plasmid,9689,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1603896462,Uganda
+UG_1603870363,1603870363,klebsiella pneumoniae,Plasmid,4130,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/1603870363,Uganda
+UG_3058210021,3058210021,klebsiella pneumoniae,Plasmid,26556,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3058210021,Uganda
+UG_3058210015,3058210015,klebsiella pneumoniae,Plasmid,70921,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3058210015,Uganda
+UG_3058205564,3058205564,klebsiella pneumoniae,Plasmid,263775,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3058205564,Uganda
+UG_3058202734,3058202734,klebsiella pneumoniae,Plasmid,264843,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3058202734,Uganda
+UG_3058202483,3058202483,klebsiella pneumoniae,Plasmid,364003,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3058202483,Uganda
+UG_3058200754,3058200754,klebsiella pneumoniae,Plasmid,82454,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/3058200754,Uganda
+ZA_2205985404,2205985404,klebsiella pneumoniae,Plasmid,5839284,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2205985404,Zambia
+ZA_2205978825,2205978825,klebsiella pneumoniae,Plasmid,5785209,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2205978825,Zambia
+ZA_2205961427,2205961427,klebsiella pneumoniae,Plasmid,5756248,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2205961427,Zambia
+ZA_2205955989,2205955989,klebsiella pneumoniae,Plasmid,5818561,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2205955989,Zambia
+ZA_2205938356,2205938356,klebsiella pneumoniae,Plasmid,5820869,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2205938356,Zambia
+ZA_2205929414,2205929414,klebsiella pneumoniae,Plasmid,5840209,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2205929414,Zambia
+ZA_2205905354,2205905354,klebsiella pneumoniae,Plasmid,5829533,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2205905354,Zambia
+ZA_2204262537,2204262537,klebsiella pneumoniae,Plasmid,5755151,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2204262537,Zambia
+ZA_2204252581,2204252581,klebsiella pneumoniae,Plasmid,5661257,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2204252581,Zambia
+ZI_2090289961,2090289961,klebsiella pneumoniae,Plasmid,7584,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2090289961,Zimbabwe
+ZI_2090289945,2090289945,klebsiella pneumoniae,Plasmid,32316,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2090289945,Zimbabwe
+ZI_2090288445,2090288445,klebsiella pneumoniae,Plasmid,6978,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2090288445,Zimbabwe
+ZI_2090288304,2090288304,klebsiella pneumoniae,Plasmid,36449,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2090288304,Zimbabwe
+ZI_2090284546,2090284546,klebsiella pneumoniae,Plasmid,7720,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2090284546,Zimbabwe
+ZI_2090284473,2090284473,klebsiella pneumoniae,Plasmid,19703,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2090284473,Zimbabwe
+ZI_2090283273,2090283273,klebsiella pneumoniae,Plasmid,13514,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2090283273,Zimbabwe
+ZI_2090283203,2090283203,klebsiella pneumoniae,Plasmid,6979,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2090283203,Zimbabwe
+ZI_2090283179,2090283179,klebsiella pneumoniae,Plasmid,56946,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2090283179,Zimbabwe
+ZI_2090274322,2090274322,klebsiella pneumoniae,Plasmid,51522,plas_kmer_sequences.fasta,https://www.ncbi.nlm.nih.gov/nuccore/2090274322,Zimbabwe
