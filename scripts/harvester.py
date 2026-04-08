@@ -235,7 +235,7 @@ class ParallelOmniSystem:
             api.upload_file(
                 path_or_fileobj=config.SEQUENCE_FILE, # The local 700MB file
                 path_in_repo="plas_kmer_sequences.fasta", # What to call it on Hugging Face
-                repo_id="YourUsername/Afrigen-Plasmid-Data", # UPDATE THIS to your HF username and dataset
+                repo_id="Jeffiq/Plaskmer", # UPDATE THIS to your HF username and dataset
                 repo_type="dataset",
                 token=os.environ.get("HF_TOKEN") # Safely grabs the password from GitHub Secrets
             )
