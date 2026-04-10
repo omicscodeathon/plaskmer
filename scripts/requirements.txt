@@ -4,3 +4,6 @@ biopython
 huggingface_hub
 regex
 python-dotenv
+scikit-learn
+numpy
+plotly
