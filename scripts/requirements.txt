@@ -3,3 +3,4 @@ pandas
 biopython
 huggingface_hub
 regex
+python-dotenv
