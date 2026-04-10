@@ -2,3 +2,4 @@ streamlit
 pandas
 biopython
 huggingface_hub
+regex
