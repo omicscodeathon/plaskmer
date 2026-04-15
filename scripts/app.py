@@ -312,7 +312,7 @@ with tab1:
             st.markdown("**Database Scope**")
             db_scope = st.selectbox("Search In:", ["Both (Plasmid & mRNA)", "Plasmid Only", "mRNA Only"])
         
-        search_triggered = st.button("🚀 Find Closest Match", type="primary", use_container_width=True)
+        search_triggered = st.button("🚀 Find Closest Match", type="primary",width="stretch")
 
     if search_triggered:
         if not query_input:
@@ -363,7 +363,7 @@ with tab2:
             # This is automatically ON because of value=True
             upload_hf = st.toggle("☁️ Push to Hugging Face after harvest?", value=True)
             
-            if st.button("🚜 Start Harvester Pipeline", type="primary", use_container_width=True):
+            if st.button("🚜 Start Harvester Pipeline", type="primary",width="stretch"):
                 if not target_org:
                     st.error("Please enter a Target Organism.")
                 else:
@@ -406,7 +406,7 @@ with tab2:
             st.markdown("#### ☁️ Manual Cloud Sync")
             st.caption("Push your existing local database directly to Hugging Face without running a new harvest.")
             
-            if st.button("⬆️ Push Existing Database to Hugging Face", use_container_width=True):
+            if st.button("⬆️ Push Existing Database to Hugging Face", width="stretch"):
                 import os
                 from huggingface_hub import HfApi
                 import config
@@ -450,7 +450,7 @@ with tab3:
         with set_col2: min_len = st.number_input("Min Size", value=50)
         with set_col3: max_len = st.number_input("Max Size", value=5000)
             
-        if st.button("🔬 Run Virtual PCR", type="primary", use_container_width=True):
+        if st.button("🔬 Run Virtual PCR", type="primary", width="stretch"):
             if not fwd_primer or not rev_primer:
                 st.error("Enter primers.")
             elif not PARQUET_FILE or not PARQUET_FILE.exists():
@@ -467,7 +467,7 @@ with tab3:
 
                 if all_results:
                     st.success(f"Found {len(all_results)} amplicons.")
-                    st.dataframe(pd.DataFrame(all_results), use_container_width=True)
+                    st.dataframe(pd.DataFrame(all_results), width="stretch")
                 else:
                     st.warning("No amplicons found.")
 
@@ -537,14 +537,14 @@ with tab4:
             col1, col2 = st.columns([1.5, 1])
             with col1:
                 fig_map = analytics_engine.plot_organism_heatmap(df, selected_org)
-                st.plotly_chart(fig_map, use_container_width=True)
+                st.plotly_chart(fig_map, width="stretch")
             with col2:
                 fig_types = analytics_engine.plot_type_distribution(df, selected_org)
-                st.plotly_chart(fig_types, use_container_width=True)
+                st.plotly_chart(fig_types, width="stretch")
             
             # 2. Quality Metrics (Lengths & GC)
             fig_quality = analytics_engine.plot_sequence_quality_metrics(df, selected_org)
-            st.plotly_chart(fig_quality, use_container_width=True)
+            st.plotly_chart(fig_quality, width="stretch")
         
         st.markdown("---")
         
@@ -558,7 +558,7 @@ with tab4:
         
         if selected_countries:
             fig_comparison = analytics_engine.plot_cross_country_comparison(df, selected_countries)
-            st.plotly_chart(fig_comparison, use_container_width=True)
+            st.plotly_chart(fig_comparison, width="stretch")
 
         st.markdown("---")
         
@@ -578,7 +578,7 @@ with tab4:
             # 1. Show the specific Heatmap
             fig_type_map = analytics_engine.plot_specific_type_heatmap(df, analysis_type)
             if fig_type_map:
-                st.plotly_chart(fig_type_map, use_container_width=True)
+                st.plotly_chart(fig_type_map, width="stretch")
             
             # 2. Show the Host Organism Bar and Signature Scatter Plot side-by-side
             fig_bar, fig_scatter = analytics_engine.plot_type_scatter_and_bar(df, analysis_type)
@@ -586,9 +586,9 @@ with tab4:
             if fig_bar and fig_scatter:
                 type_col1, type_col2 = st.columns(2)
                 with type_col1:
-                    st.plotly_chart(fig_bar, use_container_width=True)
+                    st.plotly_chart(fig_bar, width="stretch")
                 with type_col2:
-                    st.plotly_chart(fig_scatter, use_container_width=True)
+                    st.plotly_chart(fig_scatter, width="stretch")
         
 # =============================================
 # TAB 5: GLOBAL STATS
@@ -631,10 +631,10 @@ with tab5:
                     paper_bgcolor='rgba(0,0,0,0)'
                 )
                 
-                st.plotly_chart(fig_map, use_container_width=True)
+                st.plotly_chart(fig_map, width="stretch")
                 
                 with st.expander("View Geographic Data Table"):
-                    st.dataframe(map_data.sort_values('Sequence Count', ascending=False), use_container_width=True)
+                    st.dataframe(map_data.sort_values('Sequence Count', ascending=False), width="stretch")
             else:
                 st.info("No sequence data from African countries currently exists in the database.")
         else:
@@ -717,7 +717,7 @@ with tab7:
                             st.metric("Closest Relative", best_match_id)
                             st.metric("K-mer Similarity", f"{best_score*100:.2f}%")
                             st.markdown("**Other Similar Sequences:**")
-                            st.dataframe(sim_results, use_container_width=True)
+                            st.dataframe(sim_results, width="stretch")
                         else:
                             st.info("No close neighbors found.")
 
@@ -786,7 +786,7 @@ with tab8:
 
             # If ORFs have been found and saved in session state, show the BLAST UI
             if 'current_orfs' in st.session_state:
-                st.dataframe(st.session_state['current_orfs'][['Start (bp)', 'Length (bp)', 'Protein Length (AA)', 'NCBI Identity']], use_container_width=True)
+                st.dataframe(st.session_state['current_orfs'][['Start (bp)', 'Length (bp)', 'Protein Length (AA)', 'NCBI Identity']], width="stretch")
                 
                 st.markdown("### 🌐 Step 2: Identify ORFs via NCBI")
                 st.warning("Note: Searching NCBI takes ~30-60 seconds per sequence. Do not close the window.")
