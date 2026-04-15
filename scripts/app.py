@@ -4,7 +4,7 @@ import os
 import time
 from pathlib import Path
 import regex
-from huggingface_hub import HfApi
+from huggingface_hub import HfApi, hf_hub_download
 from dotenv import load_dotenv
 from harvester import ParallelOmniSystem # YOUR REAL HARVESTER
 from Bio import SeqIO
@@ -28,21 +28,41 @@ load_dotenv()
 
 
 # --- PATH CONFIGURATION (PARQUET ENGINE) ---
+# --- PATH CONFIGURATION (PARQUET ENGINE) ---
 SCRIPT_DIR = Path(__file__).parent.resolve()
 
 def find_database_file(filename):
+    # 1. Check local scripts folder
     path_same_folder = SCRIPT_DIR / filename
     if path_same_folder.exists():
         return path_same_folder
+    
+    # 2. Check local data folder
     path_github = SCRIPT_DIR.parent / "data" / filename
     if path_github.exists():
         return path_github
-    return None
+        
+    # 3. CLOUD FALLBACK: Download directly from Hugging Face
+    try:
+        hf_token = os.environ.get("HF_TOKEN")
+        repo_id = getattr(config, 'HF_REPO_ID', "Jeffiq/Plaskmer") # Ensure your config has the correct repo ID
+        
+        # Download the file from the cloud to the Streamlit server
+        cloud_path = hf_hub_download(
+            repo_id=repo_id, 
+            filename=f"data/{filename}", # Looks in the data/ folder of your HF repo
+            repo_type="dataset",
+            token=hf_token
+        )
+        return Path(cloud_path)
+    except Exception as e:
+        # If it completely fails, it will return None and show your missing data warnings
+        return None
 
 # The single, high-performance database file
-PARQUET_FILE = find_database_file(config.MASTER_PARQUET) 
+PARQUET_FILE = find_database_file(config.MASTER_PARQUET)
 
-
+# 
 # --- HUGGING FACE HELPER ---
 def push_to_huggingface(local_filepath, repo_filepath):
     hf_token = os.environ.get("HF_TOKEN")
