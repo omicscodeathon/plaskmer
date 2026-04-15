@@ -482,13 +482,14 @@ with tab4:
     import pandas as pd
     import analytics_engine # Import your new custom module!
 
-    parquet_file = getattr(config, 'MASTER_PARQUET', 'master_database.parquet')
+    # --- DELETE THE OLD parquet_file VARIABLE HERE ---
 
-    if not os.path.exists(parquet_file):
+    # --- USE THE SMART GLOBAL PARQUET_FILE INSTEAD ---
+    if not PARQUET_FILE or not PARQUET_FILE.exists():
         st.warning("⚠️ No data found! Please run the Harvester in Tab 2 first.")
     else:
-        # Load the data incredibly fast using Parquet
-        df_raw = pd.read_parquet(parquet_file)
+        # Load the data incredibly fast using the smart Parquet path
+        df_raw = pd.read_parquet(PARQUET_FILE)
         
         if df_raw.empty:
             st.warning("⚠️ Database is empty.")
@@ -496,6 +497,10 @@ with tab4:
             # Prep the data (calculate GC content, clean missing sequences)
             with st.spinner("Calculating genomic metrics..."):
                 df = analytics_engine.prep_analytics_data(df_raw)
+            
+            # --- GLOBAL METRICS ---
+            #st.markdown("### 📊 Global Database Metrics")
+            # ... (The rest of your code stays exactly the same from here down!)
             
             # --- GLOBAL METRICS ---
             st.markdown("### 📊 Global Database Metrics")
