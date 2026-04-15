@@ -480,103 +480,115 @@ with tab4:
     import config
     import os
     import pandas as pd
-    import analytics_engine # Import your new custom module!
+    from huggingface_hub import hf_hub_download
+    import analytics_engine 
 
-    # --- DELETE THE OLD parquet_file VARIABLE HERE ---
-
-    # --- USE THE SMART GLOBAL PARQUET_FILE INSTEAD ---
-    if not PARQUET_FILE or not PARQUET_FILE.exists():
-        st.warning("⚠️ No data found! Please run the Harvester in Tab 2 first.")
-    else:
-        # Load the data incredibly fast using the smart Parquet path
+    # We will force a check for the file right here
+    if PARQUET_FILE and PARQUET_FILE.exists():
         df_raw = pd.read_parquet(PARQUET_FILE)
+    else:
+        st.warning("⚠️ Local file missing. Attempting direct cloud connection to Hugging Face...")
+        try:
+            hf_token = os.environ.get("HF_TOKEN")
+            repo_id = getattr(config, 'HF_REPO_ID', "Jeffiq/Plaskmer") # Check your capitals here!
+            
+            # Force the download directly inside Tab 4
+            cloud_path = hf_hub_download(
+                repo_id=repo_id, 
+                filename="data/master_database.parquet", 
+                repo_type="dataset",
+                token=hf_token
+            )
+            df_raw = pd.read_parquet(cloud_path)
+            st.success("☁️ Successfully connected to Hugging Face Analytics!")
+            
+        except Exception as e:
+            st.error(f"❌ Hugging Face Connection Blocked: {e}")
+            df_raw = pd.DataFrame() # Create an empty frame so the app doesn't crash
+
+    # Now proceed with the analytics IF we successfully got data
+    if df_raw.empty:
+        st.warning("⚠️ Analytics cannot proceed until the cloud connection is fixed.")
+    else:
+        with st.spinner("Calculating genomic metrics..."):
+            df = analytics_engine.prep_analytics_data(df_raw)
+            
+        # --- GLOBAL METRICS ---
+        st.markdown("### 📊 Global Database Metrics")
         
-        if df_raw.empty:
-            st.warning("⚠️ Database is empty.")
+        # PROPERLY INDENTED SECTION STARTS HERE
+        m1, m2, m3, m4 = st.columns(4)
+        m1.metric("Total Sequences", len(df))
+        m2.metric("Unique Organisms", df['Organism'].nunique())
+        m3.metric("African Countries", df['Country'].nunique())
+        m4.metric("Avg GC Content", f"{df['GC_Content'].mean():.2f}%")
+        
+        st.markdown("---")
+        
+        # --- INTERACTIVE ORGANISM ANALYSIS ---
+        st.markdown("### 🦠 Deep Organism Analysis")
+        
+        # Get a list of unique organisms for the dropdown
+        available_organisms = df['Organism'].unique().tolist()
+        selected_org = st.selectbox("Select an Organism to Analyze:", available_organisms)
+        
+        if selected_org:
+            # 1. Map & Types (Side by side)
+            col1, col2 = st.columns([1.5, 1])
+            with col1:
+                fig_map = analytics_engine.plot_organism_heatmap(df, selected_org)
+                st.plotly_chart(fig_map, use_container_width=True)
+            with col2:
+                fig_types = analytics_engine.plot_type_distribution(df, selected_org)
+                st.plotly_chart(fig_types, use_container_width=True)
+            
+            # 2. Quality Metrics (Lengths & GC)
+            fig_quality = analytics_engine.plot_sequence_quality_metrics(df, selected_org)
+            st.plotly_chart(fig_quality, use_container_width=True)
+        
+        st.markdown("---")
+        
+        # --- CROSS-COUNTRY COMPARISON ---
+        st.markdown("### 🌍 Cross-Country Comparison Matrix")
+        available_countries = sorted(df['Country'].unique().tolist())
+        
+        # Default to the first two countries if they exist
+        default_countries = available_countries[:2] if len(available_countries) >= 2 else available_countries
+        selected_countries = st.multiselect("Select Countries to Compare:", available_countries, default=default_countries)
+        
+        if selected_countries:
+            fig_comparison = analytics_engine.plot_cross_country_comparison(df, selected_countries)
+            st.plotly_chart(fig_comparison, use_container_width=True)
+
+        st.markdown("---")
+        
+        # --- PLASMID & mRNA DEEP DIVE ---
+        st.markdown("### 🧬 Plasmid & mRNA Deep Dive")
+        st.caption("Isolate and analyze specific genetic elements across the entire database.")
+        
+        # Let the user toggle between Plasmid and mRNA analysis
+        analysis_type = st.radio("Select Sequence Type to Analyze:", ["Plasmid", "mRNA"], horizontal=True)
+        
+        # Check if there is actually data for this type
+        type_exists = df['Type'].str.contains(analysis_type, case=False, na=False).any()
+        
+        if not type_exists:
+            st.info(f"No {analysis_type} records found in the current database.")
         else:
-            # Prep the data (calculate GC content, clean missing sequences)
-            with st.spinner("Calculating genomic metrics..."):
-                df = analytics_engine.prep_analytics_data(df_raw)
+            # 1. Show the specific Heatmap
+            fig_type_map = analytics_engine.plot_specific_type_heatmap(df, analysis_type)
+            if fig_type_map:
+                st.plotly_chart(fig_type_map, use_container_width=True)
             
-            # --- GLOBAL METRICS ---
-            #st.markdown("### 📊 Global Database Metrics")
-            # ... (The rest of your code stays exactly the same from here down!)
+            # 2. Show the Host Organism Bar and Signature Scatter Plot side-by-side
+            fig_bar, fig_scatter = analytics_engine.plot_type_scatter_and_bar(df, analysis_type)
             
-            # --- GLOBAL METRICS ---
-            st.markdown("### 📊 Global Database Metrics")
-            m1, m2, m3, m4 = st.columns(4)
-            m1.metric("Total Sequences", len(df))
-            m2.metric("Unique Organisms", df['Organism'].nunique())
-            m3.metric("African Countries", df['Country'].nunique())
-            m4.metric("Avg GC Content", f"{df['GC_Content'].mean():.2f}%")
-            
-            st.markdown("---")
-            
-            # --- INTERACTIVE ORGANISM ANALYSIS ---
-            st.markdown("### 🦠 Deep Organism Analysis")
-            
-            # Get a list of unique organisms for the dropdown
-            available_organisms = df['Organism'].unique().tolist()
-            selected_org = st.selectbox("Select an Organism to Analyze:", available_organisms)
-            
-            if selected_org:
-                # 1. Map & Types (Side by side)
-                col1, col2 = st.columns([1.5, 1])
-                with col1:
-                    fig_map = analytics_engine.plot_organism_heatmap(df, selected_org)
-                    st.plotly_chart(fig_map, use_container_width=True)
-                with col2:
-                    fig_types = analytics_engine.plot_type_distribution(df, selected_org)
-                    st.plotly_chart(fig_types, use_container_width=True)
-                
-                # 2. Quality Metrics (Lengths & GC)
-                fig_quality = analytics_engine.plot_sequence_quality_metrics(df, selected_org)
-                st.plotly_chart(fig_quality, use_container_width=True)
-            
-            st.markdown("---")
-            
-            # --- CROSS-COUNTRY COMPARISON ---
-            st.markdown("### 🌍 Cross-Country Comparison Matrix")
-            available_countries = sorted(df['Country'].unique().tolist())
-            
-            # Default to the first two countries if they exist
-            default_countries = available_countries[:2] if len(available_countries) >= 2 else available_countries
-            selected_countries = st.multiselect("Select Countries to Compare:", available_countries, default=default_countries)
-            
-            if selected_countries:
-                fig_comparison = analytics_engine.plot_cross_country_comparison(df, selected_countries)
-                st.plotly_chart(fig_comparison, use_container_width=True)
-
-            st.markdown("---")
-            
-            # --- PLASMID & mRNA DEEP DIVE ---
-            st.markdown("### 🧬 Plasmid & mRNA Deep Dive")
-            st.caption("Isolate and analyze specific genetic elements across the entire database.")
-            
-            # Let the user toggle between Plasmid and mRNA analysis
-            analysis_type = st.radio("Select Sequence Type to Analyze:", ["Plasmid", "mRNA"], horizontal=True)
-            
-            # Check if there is actually data for this type
-            type_exists = df['Type'].str.contains(analysis_type, case=False, na=False).any()
-            
-            if not type_exists:
-                st.info(f"No {analysis_type} records found in the current database.")
-            else:
-                # 1. Show the specific Heatmap
-                fig_type_map = analytics_engine.plot_specific_type_heatmap(df, analysis_type)
-                if fig_type_map:
-                    st.plotly_chart(fig_type_map, use_container_width=True)
-                
-                # 2. Show the Host Organism Bar and Signature Scatter Plot side-by-side
-                fig_bar, fig_scatter = analytics_engine.plot_type_scatter_and_bar(df, analysis_type)
-                
-                if fig_bar and fig_scatter:
-                    type_col1, type_col2 = st.columns(2)
-                    with type_col1:
-                        st.plotly_chart(fig_bar, use_container_width=True)
-                    with type_col2:
-                        st.plotly_chart(fig_scatter, use_container_width=True)
-
+            if fig_bar and fig_scatter:
+                type_col1, type_col2 = st.columns(2)
+                with type_col1:
+                    st.plotly_chart(fig_bar, use_container_width=True)
+                with type_col2:
+                    st.plotly_chart(fig_scatter, use_container_width=True)
         
 # =============================================
 # TAB 5: GLOBAL STATS
