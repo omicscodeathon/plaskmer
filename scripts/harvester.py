@@ -19,7 +19,6 @@ user_email = st.session_state.get('user_email')
 if user_email:
     Entrez.email = user_email
 
-
 class ParallelOmniSystem:
     def __init__(self, target_org, selected_dbs, types, target_goal, push_to_hf=False, db_path=None):
         print("🚀 Initializing Parquet-Powered Parallel Pipeline...")
