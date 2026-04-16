@@ -25,7 +25,8 @@ import config
 
 # Load local .env file
 load_dotenv()
-
+import warnings
+warnings.filterwarnings("ignore", message="The library used by the \*country names\* `locationmode` option is changing")
 
 # --- PATH CONFIGURATION (PARQUET ENGINE) ---
 # --- PATH CONFIGURATION (PARQUET ENGINE) ---
