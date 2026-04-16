@@ -8,9 +8,17 @@ from Bio import Entrez
 from huggingface_hub import HfApi
 import config
 import constants
+from processor import parallel_process_records # <--- Moved to the top!
 
 # Ensure your NCBI email is set in your config.py
-Entrez.email = config.NCBI_EMAIL
+
+import streamlit as st # Add this at the top
+
+# NEW LOGIC: Pull from the user's browser session, not your config
+user_email = st.session_state.get('user_email')
+if user_email:
+    Entrez.email = user_email
+
 
 class ParallelOmniSystem:
     def __init__(self, target_org, selected_dbs, types, target_goal, push_to_hf=False):
@@ -26,7 +34,6 @@ class ParallelOmniSystem:
         # 1. Initialize Local Parquet Backup & Load Existing Accessions
         self.parquet_file = config.MASTER_PARQUET
         
-        # 🚨 THE DEBUG ALARM: THIS TELLS US EXACTLY WHERE THE FILE IS GOING
         print(f"\n🎯 ALERTTTT! I AM SAVING THE FILE EXACTLY HERE: {os.path.abspath(self.parquet_file)}\n")
         
         if os.path.exists(self.parquet_file):
@@ -37,7 +44,6 @@ class ParallelOmniSystem:
                 self.existing_accs.update(df_existing["Accession"].dropna().tolist())
             except Exception as e:
                 print(f"⚠️ Could not read existing Parquet file. It might be corrupted from a previous crash: {e}")
-                # 🚨 Auto-delete corrupted files so we can start fresh!
                 try:
                     os.remove(self.parquet_file)
                     print("🗑️ Deleted corrupted file. Starting fresh!")
@@ -73,7 +79,6 @@ class ParallelOmniSystem:
 
                     found_for_country = 0
                     for acc in ids:
-                        # Convert to strict string immediately!
                         acc = str(acc) 
                         
                         if acc in self.existing_accs: continue
@@ -105,11 +110,10 @@ class ParallelOmniSystem:
                 except Exception as e:
                     print(f"❌ [Searcher] Error in {db} for {country}: {e}")
 
-        # Send poison pill to close workers
         self.search_to_harvest_q.put(None)
 
     def worker_harvest(self):
-        """Thread 2: Consumes queued accessions, fetches FASTA sequences, and queues them for the Parquet writer."""
+        """Thread 2: Consumes queued accessions, fetches FASTA sequences."""
         while True:
             item = self.search_to_harvest_q.get()
             
@@ -162,7 +166,8 @@ class ParallelOmniSystem:
                             "Length": seq_length,
                             "Sequence": sequence,
                             "Source_URL": item["Source_URL"],
-                            "Country": item["Country"]
+                            "Country": item["Country"],
+                            "db": db # Passing this so the processor keeps it
                         }
                         
                         self.harvest_to_writer_q.put(record)
@@ -196,26 +201,41 @@ class ParallelOmniSystem:
     def _write_batch_to_parquet(self, batch):
         """Helper function to append a batch of records to the Parquet file safely."""
         try:
-            df_batch = pd.DataFrame(batch)
+            # 🔥 RUN THE HUNTER FIRST
+            print(f"🔎 [Hunter] Deep-scanning and contacting NCBI for {len(batch)} sequences...")
+            processed_batch = parallel_process_records(batch)
             
-            # 🚨 THE FINAL FIX: Force Pandas native String format to absolutely guarantee compliance
-            df_batch['Unique_ID'] = df_batch['Unique_ID'].astype("string")
-            df_batch['Accession'] = df_batch['Accession'].astype("string")
-            df_batch['Organism'] = df_batch['Organism'].astype("string")
-            df_batch['Type'] = df_batch['Type'].astype("string")
-            df_batch['Length'] = df_batch['Length'].astype("int32")
-            df_batch['Sequence'] = df_batch['Sequence'].astype("string")
-            df_batch['Source_URL'] = df_batch['Source_URL'].astype("string")
-            df_batch['Country'] = df_batch['Country'].astype("string")
+            df_batch = pd.DataFrame(processed_batch)
             
+            # 🚨 ABSOLUTE SCHEMA COMPLIANCE
+            df_batch['Unique_ID'] = df_batch.get('Unique_ID', '').astype("string")
+            df_batch['Accession'] = df_batch.get('Accession', '').astype("string")
+            df_batch['Organism'] = df_batch.get('Organism', '').astype("string")
+            df_batch['Type'] = df_batch.get('Type', 'WGS').astype("string")
+            df_batch['Length'] = df_batch.get('Length', 0).astype("int32")
+            df_batch['Sequence'] = df_batch.get('Sequence', '').astype("string")
+            df_batch['Source_URL'] = df_batch.get('Source_URL', '').astype("string")
+            df_batch['Country'] = df_batch.get('Country', '').astype("string")
+            df_batch['db'] = df_batch.get('db', 'unknown').astype("string")
+            
+            # New Enriched Fields
+            df_batch['Selection_Marker'] = df_batch.get('Selection_Marker', 'None').astype("string")
+            df_batch['Taxonomy_ID'] = df_batch.get('Taxonomy_ID', 'Pending').astype("string")
+            df_batch['PubMed_IDs'] = df_batch.get('PubMed_IDs', 'None').astype("string")
+            df_batch['Date_Harvested'] = df_batch.get('Date_Harvested', '').astype("string")
+            
+            # ENGINE SWITCH: 'pyarrow' handles schema evolution (new columns) better than 'fastparquet'
             if os.path.exists(self.parquet_file):
-                df_batch.to_parquet(self.parquet_file, engine='fastparquet', append=True)
+                # We read the old file, concat the new batch, and overwrite to ensure schema matches
+                df_existing = pd.read_parquet(self.parquet_file, engine='pyarrow')
+                df_combined = pd.concat([df_existing, df_batch], ignore_index=True)
+                df_combined.to_parquet(self.parquet_file, engine='pyarrow', index=False)
             else:
-                df_batch.to_parquet(self.parquet_file, engine='fastparquet')
+                df_batch.to_parquet(self.parquet_file, engine='pyarrow', index=False)
                 
-            print(f"💾 [Writer] Successfully saved batch of {len(batch)} records to Parquet.")
+            print(f"💾 [Writer] Successfully saved enriched batch of {len(batch)} records to Parquet.")
         except Exception as e:
-            print(f"❌ [Writer] Failed to write batch to Parquet: {e}")
+            print(f"❌ [Writer] Failed to process/write batch to Parquet: {e}")
 
     def _upload_to_huggingface(self):
         """Uploads the unified Parquet file to Hugging Face."""
@@ -231,7 +251,7 @@ class ParallelOmniSystem:
             if os.path.exists(self.parquet_file):
                 api.upload_file(
                     path_or_fileobj=self.parquet_file,
-                    path_in_repo=f"data/{self.parquet_file}",
+                    path_in_repo=f"data/{os.path.basename(self.parquet_file)}",
                     repo_id=repo_id,
                     repo_type="dataset"
                 )

@@ -187,9 +187,18 @@ def update_kmer_database(parquet_path, k=6):
             
             # Generate K-mers (using your existing tool)
             new_kmer_df = fasta_to_kmer_df(str(temp_fasta), k=k)
+            
             if not new_kmer_df.empty:
-                # Ensure ID is string to prevent merge errors
+                # 🚨 THE FIX: Handle the ID whether it's in the index or misnamed
+                if 'sequence_id' not in new_kmer_df.columns:
+                    # If it's in the index, pull it out into a column
+                    new_kmer_df = new_kmer_df.reset_index()
+                    # Rename the first column (which was the index) to 'sequence_id'
+                    new_kmer_df.rename(columns={new_kmer_df.columns[0]: 'sequence_id'}, inplace=True)
+                
+                # Now it is guaranteed to exist, so we convert it to string
                 new_kmer_df['sequence_id'] = new_kmer_df['sequence_id'].astype(str)
+                
                 all_new_kmers.append(new_kmer_df)
                 new_records_count += len(new_kmer_df)
             
@@ -208,7 +217,6 @@ def update_kmer_database(parquet_path, k=6):
             combined_new.to_parquet(target_path, index=False, engine='pyarrow')
             
     return target_path, new_records_count
-
 
 # --- INCREMENTAL ORF EXTRACTOR (BATCHED) ---
 def update_orf_database(parquet_path):
@@ -359,29 +367,14 @@ def find_closest_matches(query_seq, k=6, top_n=50):
 # ==========================================
 st.set_page_config(page_title="The PlasKmer Studio", page_icon="🧬", layout="wide")
 # --- USER SETTINGS & PRIVACY (SIDEBAR) ---
-with st.sidebar:
-    st.markdown("### ⚙️ User Settings")
-    st.caption("Required for NCBI Database Access")
-    
-    # Check if email is already in memory
-    if "user_email" not in st.session_state:
-        st.session_state.user_email = ""
-        
-    user_email_input = st.text_input("Enter your NCBI registered email:", value=st.session_state.user_email)
-    
-    if st.button("Save Configuration", width="stretch"):
-        if "@" in user_email_input:
-            st.session_state.user_email = user_email_input
-            st.success("✅ Email securely saved for this session.")
-        else:
-            st.error("Please enter a valid email.")
-            
-    st.markdown("---")
-    st.info("🔒 **Privacy Note:** Your email is kept strictly in your browser's temporary memory. It is never stored on our servers or shared publicly.")
+
+
+
 
 # Update your Entrez email dynamically anywhere in the app like this:
 from Bio import Entrez
-Entrez.email = st.session_state.user_email if st.session_state.user_email else "default@example.com"
+
+
 
 st.markdown("""
 <style>
@@ -472,140 +465,165 @@ with tab1:
 # ==========================================
 with tab2:
     st.markdown("<h3 class='The-subheader'>Database Management & Processing</h3>", unsafe_allow_html=True)
-    colA, colB = st.columns([1.5, 1])
-    with colA:
+    
+    # Initialize session state if not present
+    if "user_email" not in st.session_state:
+        st.session_state.user_email = ""
+
+    # 🚨 THE GATEKEEPER: Ask for email directly in Tab 2!
+    if not st.session_state.user_email:
+        st.warning("🛑 **Action Required:** You must provide your NCBI email below to access the Harvester tools.")
+        st.info("NCBI requires an email to identify traffic. This is kept strictly in your browser and is never stored on our servers.")
         
-        # --- NEW MAINTENANCE SECTION ---
-        with st.container(border=True):
-            st.markdown("#### 🛠️ Maintenance & Catch-Up")
-            st.caption("Analyze existing records in your database that were downloaded before the ORF engine was added.")
+        # Put the input box right here in the middle of the screen
+        user_email_input = st.text_input("Enter your NCBI registered email:", placeholder="email@example.com")
+        
+        if st.button("💾 Save & Unlock Harvester", type="primary"):
+            if "@" in user_email_input and "." in user_email_input:
+                st.session_state.user_email = user_email_input
+                st.rerun() # This instantly refreshes the page to show the tools!
+            else:
+                st.error("❌ Please enter a valid email address.")
+    else:
+        # If email exists, show the tools!
+        colA, colB = st.columns([1.5, 1])
+        with colA:
             
-            if st.button("🔍 Scan Existing Database for Missing ORFs", help="Analyze all saved sequences for ORFs.", width="stretch"):
-                if PARQUET_FILE and PARQUET_FILE.exists():
-                    with st.spinner("Analyzing existing records... this may take a few minutes."):
-                        # Calls the function we added in the previous step
-                        orf_path, num_added = update_orf_database(PARQUET_FILE)
-                        
-                        if num_added > 0:
-                            st.success(f"✅ Success! Found and analyzed {num_added} new ORF entries.")
-                            # Trigger cloud sync for the ORF file specifically
-                            try:
-                                push_to_huggingface(orf_path, orf_path.name)
-                                st.info("☁️ Global ORF Database updated on Hugging Face.")
-                            except:
-                                st.warning("ORF Database updated locally, but failed to push to Hugging Face. Check your token.")
-                        else:
-                            st.info("✨ Everything is up to date! All existing records already have ORF data.")
-                else:
-                    st.error("No master database found to scan.")
-
-        # --- HARVESTER BLOCK (YOUR EXISTING CODE) ---
-        with st.container(border=True):
-            st.markdown("#### 🚜 Run Parallel Omni Harvester")
-            # ... rest of your code ...
-            target_org = st.text_input("Target Organism:", placeholder="e.g., Vibrio cholerae")
-            
-            st.markdown("**1. Select Databases:**")
-            db_col1, db_col2, db_col3, db_col4 = st.columns(4)
-            with db_col1: use_bp = st.checkbox("BioProject")
-            with db_col2: use_bs = st.checkbox("BioSample")
-            with db_col3: use_sra = st.checkbox("SRA")
-            with db_col4: use_nuc = st.checkbox("Nucleotide", value=True)
-            
-            st.markdown("**2. Select Types:**")
-            type_col1, type_col2, type_col3 = st.columns(3)
-            with type_col1: inc_plasmids = st.checkbox("Plasmids", value=True)
-            with type_col2: inc_wgs = st.checkbox("WGS")
-            with type_col3: inc_genes = st.checkbox("Specific Genes")
-            
-            target_goal = st.number_input("Records per country:", min_value=1, value=10)
-            run_kmer_calc = st.checkbox("🧬 Auto-Calculate K-mers after harvest?", value=True)
-            k_size = st.number_input("K-mer Size (k):", min_value=2, max_value=12, value=6)
-            
-            # This is automatically ON because of value=True
-            upload_hf = st.toggle("☁️ Push to Hugging Face after harvest?", value=True)
-            
-            run_orf_calc = st.checkbox("🧬 Auto-Extract ORFs after harvest?", value=True)
-            
-            if st.button("🚜 Start Harvester Pipeline", type="primary", width="stretch"):
-                if not target_org:
-                    st.error("Please enter a Target Organism.")
-                else:
-                    selected_dbs = []
-                    if use_bp: selected_dbs.append("bioproject")
-                    if use_bs: selected_dbs.append("biosample")
-                    if use_sra: selected_dbs.append("sra")
-                    if use_nuc: selected_dbs.append("nucleotide")
+            # --- NEW MAINTENANCE SECTION ---
+            with st.container(border=True):
+                st.markdown("#### 🛠️ Maintenance & Catch-Up")
+                st.caption("Analyze existing records in your database that were downloaded before the ORF engine was added.")
+                
+                if st.button("🔍 Scan Existing Database for Missing ORFs", help="Analyze all saved sequences for ORFs.", width="stretch"):
                     
-                    types = []
-                    if inc_plasmids: types.append("plasmid")
-                    if inc_wgs: types.append("WGS")
-                    if inc_genes: types.append("gene")
+                    # INJECT EMAIL JUST IN CASE
+                    from Bio import Entrez
+                    Entrez.email = st.session_state.user_email
                     
-                    with st.spinner("Harvesting via Parallel OmniSystem..."):
-                        bot = ParallelOmniSystem(target_org=target_org, selected_dbs=selected_dbs, types=types, target_goal=target_goal, push_to_hf=False)
-                        bot.run_all_parallel()
-                    st.success("✅ Local Harvest Complete!")
-                                                                   
-                    # 1. Trigger Incremental K-mers
-                    if run_kmer_calc and PARQUET_FILE and PARQUET_FILE.exists():
-                        with st.spinner(f"🧬 Incrementally calculating {k_size}-mers for new sequences..."):
-                            kmer_csv_path, num_new_kmers = update_kmer_database(PARQUET_FILE, k=int(k_size))
-                            if num_new_kmers > 0:
-                                st.success(f"✅ Added {num_new_kmers} new sequences to K-mer index!")
-                    
-                    # 2. Trigger Incremental ORF Extraction
-                    if run_orf_calc and PARQUET_FILE and PARQUET_FILE.exists():
-                        with st.spinner(f"🧬 Extracting global ORFs for new sequences..."):
-                            orf_parquet_path, num_new_orfs = update_orf_database(PARQUET_FILE)
-                            if num_new_orfs > 0:
-                                st.success(f"✅ Extracted and saved {num_new_orfs} new ORFs to the database!")
+                    if PARQUET_FILE and PARQUET_FILE.exists():
+                        with st.spinner("Analyzing existing records... this may take a few minutes."):
+                            orf_path, num_added = update_orf_database(PARQUET_FILE)
+                            
+                            if num_added > 0:
+                                st.success(f"✅ Success! Found and analyzed {num_added} new ORF entries.")
+                                try:
+                                    push_to_huggingface(orf_path, orf_path.name)
+                                    st.info("☁️ Global ORF Database updated on Hugging Face.")
+                                except:
+                                    st.warning("ORF Database updated locally, but failed to push to Hugging Face. Check your token.")
                             else:
-                                st.info("⚡ No new ORFs detected.")
+                                st.info("✨ Everything is up to date! All existing records already have ORF data.")
+                    else:
+                        st.error("No master database found to scan.")
+
+            # --- HARVESTER BLOCK ---
+            with st.container(border=True):
+                st.markdown("#### 🚜 Run Parallel Omni Harvester")
+                target_org = st.text_input("Target Organism:", placeholder="e.g., Vibrio cholerae")
+                
+                st.markdown("**1. Select Databases:**")
+                db_col1, db_col2, db_col3, db_col4 = st.columns(4)
+                with db_col1: use_bp = st.checkbox("BioProject")
+                with db_col2: use_bs = st.checkbox("BioSample")
+                with db_col3: use_sra = st.checkbox("SRA")
+                with db_col4: use_nuc = st.checkbox("Nucleotide", value=True)
+                
+                st.markdown("**2. Select Types:**")
+                type_col1, type_col2, type_col3 = st.columns(3)
+                with type_col1: inc_plasmids = st.checkbox("Plasmids", value=True)
+                with type_col2: inc_wgs = st.checkbox("WGS")
+                with type_col3: inc_genes = st.checkbox("Specific Genes")
+                
+                target_goal = st.number_input("Records per country:", min_value=1, value=10)
+                run_kmer_calc = st.checkbox("🧬 Auto-Calculate K-mers after harvest?", value=True)
+                k_size = st.number_input("K-mer Size (k):", min_value=2, max_value=12, value=6)
+                
+                upload_hf = st.toggle("☁️ Push to Hugging Face after harvest?", value=True)
+                run_orf_calc = st.checkbox("🧬 Auto-Extract ORFs after harvest?", value=True)
+                
+                if st.button("🚜 Start Harvester Pipeline", type="primary", width="stretch"):
+                    if not target_org:
+                        st.error("Please enter a Target Organism.")
+                    else:
+                        # 🚨 INJECT USER EMAIL INTO GLOBAL ENTREZ
+                        from Bio import Entrez
+                        Entrez.email = st.session_state.user_email
+                        
+                        selected_dbs = []
+                        if use_bp: selected_dbs.append("bioproject")
+                        if use_bs: selected_dbs.append("biosample")
+                        if use_sra: selected_dbs.append("sra")
+                        if use_nuc: selected_dbs.append("nucleotide")
+                        
+                        types = []
+                        if inc_plasmids: types.append("plasmid")
+                        if inc_wgs: types.append("WGS")
+                        if inc_genes: types.append("gene")
+                        
+                        with st.spinner("Harvesting via Parallel OmniSystem..."):
+                            bot = ParallelOmniSystem(target_org=target_org, selected_dbs=selected_dbs, types=types, target_goal=target_goal, push_to_hf=False)
+                            bot.run_all_parallel()
+                        st.success("✅ Local Harvest Complete!")
+                                                                                    
+                        # 1. Trigger Incremental K-mers
+                        if run_kmer_calc and PARQUET_FILE and PARQUET_FILE.exists():
+                            with st.spinner(f"🧬 Incrementally calculating {k_size}-mers for new sequences..."):
+                                kmer_csv_path, num_new_kmers = update_kmer_database(PARQUET_FILE, k=int(k_size))
+                                if num_new_kmers > 0:
+                                    st.success(f"✅ Added {num_new_kmers} new sequences to K-mer index!")
+                        
+                        # 2. Trigger Incremental ORF Extraction
+                        if run_orf_calc and PARQUET_FILE and PARQUET_FILE.exists():
+                            with st.spinner(f"🧬 Extracting global ORFs for new sequences..."):
+                                orf_parquet_path, num_new_orfs = update_orf_database(PARQUET_FILE)
+                                if num_new_orfs > 0:
+                                    st.success(f"✅ Extracted and saved {num_new_orfs} new ORFs to the database!")
+                                else:
+                                    st.info("⚡ No new ORFs detected.")
+                        
+                        # 3. Upload updated files to Hugging Face
+                        if upload_hf:
+                            with st.spinner("☁️ Pushing updated files to Hugging Face..."):
+                                if PARQUET_FILE and PARQUET_FILE.exists():
+                                    push_to_huggingface(PARQUET_FILE, PARQUET_FILE.name)
+                                if run_kmer_calc and 'kmer_csv_path' in locals() and kmer_csv_path.exists():
+                                    push_to_huggingface(kmer_csv_path, kmer_csv_path.name)
+                                if run_orf_calc and 'orf_parquet_path' in locals() and orf_parquet_path.exists():
+                                    push_to_huggingface(orf_parquet_path, orf_parquet_path.name)
+                                st.success("✅ Cloud Databases Synced Successfully!")
+
+            # --- MANUAL CLOUD SYNC BLOCK ---
+            with st.container(border=True):
+                st.markdown("#### ☁️ Manual Cloud Sync")
+                st.caption("Push your existing local database directly to Hugging Face without running a new harvest.")
+                
+                if st.button("⬆️ Push Existing Database to Hugging Face", width="stretch"):
+                    import os
+                    from huggingface_hub import HfApi
+                    import config
                     
-                    # 3. Upload updated files to Hugging Face
-                    if upload_hf:
-                        with st.spinner("☁️ Pushing updated files to Hugging Face..."):
-                            if PARQUET_FILE and PARQUET_FILE.exists():
-                                push_to_huggingface(PARQUET_FILE, PARQUET_FILE.name)
-                            if run_kmer_calc and 'kmer_csv_path' in locals() and kmer_csv_path.exists():
-                                push_to_huggingface(kmer_csv_path, kmer_csv_path.name)
-                            if run_orf_calc and 'orf_parquet_path' in locals() and orf_parquet_path.exists():
-                                push_to_huggingface(orf_parquet_path, orf_parquet_path.name)
-                            st.success("✅ Cloud Databases Synced Successfully!")
-
-        # --- MANUAL CLOUD SYNC BLOCK ---
-        with st.container(border=True):
-            st.markdown("#### ☁️ Manual Cloud Sync")
-            st.caption("Push your existing local database directly to Hugging Face without running a new harvest.")
-            
-            if st.button("⬆️ Push Existing Database to Hugging Face", width="stretch"):
-                import os
-                from huggingface_hub import HfApi
-                import config
-                
-                parquet_file = config.MASTER_PARQUET
-                repo_id = getattr(config, 'HF_REPO_ID', None)
-                
-                if not repo_id or repo_id == "YourUsername/PlasKmer-Database":
-                    st.error("⚠️ Please update HF_REPO_ID in your config.py first!")
-                elif not os.path.exists(parquet_file):
-                    st.error(f"❌ Cannot find '{parquet_file}' locally. Run the Harvester at least once!")
-                else:
-                    with st.spinner(f"Uploading {parquet_file} to {repo_id}..."):
-                        try:
-                            api = HfApi() # Uses the token from your .env automatically
-                            api.upload_file(
-                                path_or_fileobj=parquet_file,
-                                path_in_repo=f"data/{parquet_file}",
-                                repo_id=repo_id,
-                                repo_type="dataset"
-                            )
-                            st.success(f"✅ Successfully synced local database to {repo_id}!")
-                            st.balloons()
-                        except Exception as e:
-                            st.error(f"❌ Upload failed: {e}")
-
+                    parquet_file = config.MASTER_PARQUET
+                    # 💡 Defaulting to your specified Hugging Face repo
+                    repo_id = getattr(config, 'HF_REPO_ID', "Jeffiq/Plaskmer")
+                    
+                    if not repo_id or repo_id == "YourUsername/PlasKmer-Database":
+                        st.error("⚠️ Please update HF_REPO_ID in your config.py first!")
+                    elif not os.path.exists(parquet_file):
+                        st.error(f"❌ Cannot find '{parquet_file}' locally. Run the Harvester at least once!")
+                    else:
+                        with st.spinner(f"Uploading {parquet_file} to {repo_id}..."):
+                            try:
+                                api = HfApi() # Uses the token from your .env automatically
+                                api.upload_file(
+                                    path_or_fileobj=parquet_file,
+                                    path_in_repo=f"data/{parquet_file}",
+                                    repo_id=repo_id,
+                                    repo_type="dataset"
+                                )
+                                st.success(f"✅ Successfully synced local database to {repo_id}!")
+                                st.balloons()
+                            except Exception as e:
+                                st.error(f"❌ Upload failed: {e}")
                     
 
 # ==========================================
@@ -898,19 +916,68 @@ with tab7:
         
         st.info(f"📍 **Origin:** {current_data['Country']} | **Length:** {len(selected_seq):,} bp")
 
-        # --- VISUALIZER & ORFs ---
+       # --- VISUALIZER & ORFs ---
         col_vis, col_orf = st.columns([1.2, 1])
+        
         with col_vis:
             st.markdown("#### 🔄 Circular Visualizer")
-            # ... (Visualizer code remains the same as your working version)
-            # [Visualizer Logic Here]
+            if len(selected_seq) > 0:
+                try:
+                    # 1. Base Feature (The whole plasmid)
+                    features = [
+                        GraphicFeature(start=0, end=len(selected_seq), strand=+1, color="#cddc39", label="Backbone")
+                    ]
+                    
+                    # 2. Add Restriction Sites to make the map look professional
+                    seq_obj = Seq(selected_seq)
+                    for site in Restriction.EcoRI.search(seq_obj):
+                        features.append(GraphicFeature(start=site-1, end=site, strand=+1, color="#ff4b4b", label="EcoRI"))
+                    for site in Restriction.BamHI.search(seq_obj):
+                        features.append(GraphicFeature(start=site-1, end=site, strand=+1, color="#2e66ff", label="BamHI"))
+
+                    # 3. Draw the Map
+                    record = CircularGraphicRecord(sequence_length=len(selected_seq), features=features)
+                    fig, ax = plt.subplots(figsize=(5, 5))
+                    record.plot(ax=ax)
+                    st.pyplot(fig)
+                except Exception as e:
+                    st.error(f"Could not generate visual: {e}")
+            else:
+                st.warning("Sequence length is 0. Cannot draw map.")
             
         with col_orf:
             st.markdown("#### 🧬 Sequence ORFs")
-            # [ORF Table Logic Here]
+            
+            # Look for the global ORF database
+            orf_filename = "orf_database.parquet"
+            orf_path = find_database_file(orf_filename) or (SCRIPT_DIR / orf_filename)
+            
+            if orf_path.exists():
+                try:
+                    df_orfs = pd.read_parquet(orf_path)
+                    
+                    # Filter for only the selected plasmid
+                    plasmid_orfs = df_orfs[df_orfs['Accession'].astype(str) == str(selected_plasmid_id)]
+                    
+                    if not plasmid_orfs.empty:
+                        # Display a clean table of the ORFs
+                        st.dataframe(
+                            plasmid_orfs[['Start', 'End', 'Strand', 'Length']].sort_values(by="Length", ascending=False), 
+                            use_container_width=True, 
+                            hide_index=True,
+                            height=350 # Locks the height so it aligns nicely next to the circle
+                        )
+                        st.caption(f"Found **{len(plasmid_orfs)}** ORFs. Showing longest first.")
+                    else:
+                        st.info("No ORFs extracted for this sequence yet. Go to Tab 2 and run the Maintenance scan!")
+                except Exception as e:
+                    st.error(f"Error loading ORFs: {e}")
+            else:
+                st.warning("⚠️ ORF Database not found. Please run the Harvester or Maintenance scan in Tab 2 first.")
 
         st.markdown("---")
 
+        
         # --- THE TWO TABLES: COMPARATIVE INTELLIGENCE ---
         st.markdown("### 🌍 Comparative Intelligence Analysis")
         
