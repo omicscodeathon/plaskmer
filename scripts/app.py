@@ -972,7 +972,7 @@ with tab7:
                         # Display a clean table of the ORFs
                         st.dataframe(
                             plasmid_orfs[['Start', 'End', 'Strand', 'Length']].sort_values(by="Length", ascending=False), 
-                            use_container_width=True, 
+                            width='stretch', 
                             hide_index=True,
                             height=350 # Locks the height so it aligns nicely next to the circle
                         )
@@ -1006,7 +1006,7 @@ with tab7:
                 same_host_df = full_sim[full_sim['Organism'] == selected_host].head(5)
                 if not same_host_df.empty:
                     st.dataframe(same_host_df[['Accession', 'Country', 'Similarity Score']], 
-                                 use_container_width=True, hide_index=True)
+                                 width='stretch', hide_index=True)
                 else:
                     st.info("No close relatives found in the same species.")
 
@@ -1017,7 +1017,7 @@ with tab7:
                 diff_host_df = full_sim[full_sim['Organism'] != selected_host].head(10)
                 if not diff_host_df.empty:
                     st.dataframe(diff_host_df[['Accession', 'Organism', 'Country', 'Similarity Score']], 
-                                 use_container_width=True, hide_index=True)
+                                 width='stretch', hide_index=True)
                     st.caption("🚨 High similarity in different species suggests potential Horizontal Gene Transfer (HGT).")
                 else:
                     st.info("No cross-species relatives detected in current database.")
@@ -1118,7 +1118,7 @@ with tab8:
                 res_df = res_df[res_df['Accession'].str.contains(search_query, case=False) | 
                                 res_df['Organism'].str.contains(search_query, case=False)]
             
-            st.dataframe(res_df[['Accession', 'Organism', 'Length', 'Identity']], use_container_width=True)
+            st.dataframe(res_df[['Accession', 'Organism', 'Length', 'Identity']], width='stretch')
             
             if st.button("🌐 Identify Top 5 Longest Genes via NCBI"):
                 # BLASTing a whole database is too slow for Streamlit, 
