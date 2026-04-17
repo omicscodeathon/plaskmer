@@ -979,10 +979,12 @@ with tab7:
             
             if orf_path.exists():
                 try:
-                    df_orfs = pd.read_parquet(orf_path)
-                    
-                    # Filter for only the selected plasmid
-                    plasmid_orfs = df_orfs[df_orfs['Accession'].astype(str) == str(selected_plasmid_id)]
+                    # 🚨 MAGIC TRICK: Use PyArrow filters to ONLY load the rows we need from the disk!
+                    # This uses ~1 MB of RAM instead of 600 MB!
+                    plasmid_orfs = pd.read_parquet(
+                        orf_path, 
+                        filters=[('Accession', '==', str(selected_plasmid_id))]
+                    )
                     
                     if not plasmid_orfs.empty:
                         # Display a clean table of the ORFs
