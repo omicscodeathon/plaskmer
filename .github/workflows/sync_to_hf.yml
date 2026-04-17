@@ -14,6 +14,6 @@ jobs:
           lfs: true
       - name: Push to hub
         env:
-          HF_TOKEN: ${{ secrets.HF_TOKEN }}
+          HF_TOKEN: ${{ secrets.HF_PLASKMER }}
         # 🚨 CHANGE THE LINK BELOW to match your actual Hugging Face username and Space name
-        run: git push --force https://Jeffiq:$HF_TOKEN@huggingface.co/spaces/Jeffiq/your-space-name main
+        run: git push --force https://Jeffiq:$HF_TOKEN@huggingface.co/spaces/Jeffiq/Plaskmer main
