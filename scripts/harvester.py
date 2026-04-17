@@ -19,7 +19,6 @@ user_email = st.session_state.get('user_email')
 if user_email:
     Entrez.email = user_email
 
-
 class ParallelOmniSystem:
     def __init__(self, target_org, selected_dbs, types, target_goal, push_to_hf=False, db_path=None):
         print("🚀 Initializing Parquet-Powered Parallel Pipeline...")
@@ -180,24 +179,57 @@ class ParallelOmniSystem:
             self.search_to_harvest_q.task_done()
 
     def consumer_parquet_writer(self):
-        """Thread 3: Listens for completed records and writes them to Parquet in batches."""
-        batch = []
+        """Listens to the queue, writes to Parquet in batches, and syncs to HF to save RAM."""
+        print("💾 Parquet Writer Thread Active.")
+        import gc # Garbage collector to manually flush RAM
+        
+        batch_records = []
+        BATCH_SIZE = 25  # 🚨 Save, Sync, and Flush RAM every 25 records
         
         while True:
-            record = self.harvest_to_writer_q.get()
+            item = self.harvest_to_writer_q.get()
             
-            if record is None:
-                if batch:
-                    self._write_batch_to_parquet(batch)
+            # If we receive 'None', the harvest is completely finished
+            if item is None:
+                if batch_records:
+                    self._save_batch_to_disk(batch_records)
+                    if self.push_to_hf:
+                        self.push_database_to_hf()
+                self.harvest_to_writer_q.task_done()
                 break
                 
-            batch.append(record)
+            # Add the new record to our temporary batch
+            batch_records.append(item)
             
-            if len(batch) >= getattr(config, 'BATCH_SIZE', 50):
-                self._write_batch_to_parquet(batch)
-                batch = [] 
+            # 🚨 THE MAGIC: IF BATCH IS FULL, SAVE, SYNC, AND DUMP MEMORY
+            if len(batch_records) >= BATCH_SIZE:
+                print(f"📦 Batch of {BATCH_SIZE} reached! Saving to disk and clearing memory...")
+                
+                # 1. Save to local Parquet
+                self._save_batch_to_disk(batch_records)
+                
+                # 2. Push the checkpoint to Hugging Face
+                if self.push_to_hf:
+                    print("⬆️ Pushing mid-harvest checkpoint to Hugging Face...")
+                    self.push_database_to_hf()
+                
+                # 3. 🧹 COMPLETELY FLUSH THE RAM
+                batch_records.clear()
+                gc.collect() 
                 
             self.harvest_to_writer_q.task_done()
+
+    def _save_batch_to_disk(self, batch):
+        """Helper to safely append a batch to the Parquet file."""
+        df_batch = pd.DataFrame(batch)
+        if os.path.exists(self.parquet_file):
+            # Read existing, append, and overwrite
+            df_existing = pd.read_parquet(self.parquet_file)
+            df_combined = pd.concat([df_existing, df_batch], ignore_index=True)
+            df_combined.to_parquet(self.parquet_file, index=False)
+        else:
+            # Create new if it doesn't exist
+            df_batch.to_parquet(self.parquet_file, index=False)
 
     def _write_batch_to_parquet(self, batch):
         """Helper function to append a batch of records to the Parquet file safely."""
@@ -269,7 +301,7 @@ class ParallelOmniSystem:
         t_writer = threading.Thread(target=self.consumer_parquet_writer)
         t_writer.start()
         
-        num_workers = 3
+        num_workers = 1
         workers = []
         for _ in range(num_workers):
             t = threading.Thread(target=self.worker_harvest)

@@ -23,9 +23,15 @@ from orf_blaster import identify_orf_via_blast
 import pyarrow.parquet as pq
 import config
 
+import gc
+# Add this right here with your other imports!
+from orf_processor import safe_batch_orf_extractor
+
+
 # Load local .env file
 load_dotenv()
-
+import warnings
+warnings.filterwarnings("ignore", message="The library used by the \*country names\* `locationmode` option is changing")
 
 # --- PATH CONFIGURATION (PARQUET ENGINE) ---
 # --- PATH CONFIGURATION (PARQUET ENGINE) ---
@@ -572,7 +578,7 @@ with tab2:
                             )
                             bot.run_all_parallel()
                         st.success("✅ Local Harvest Complete!")
-                                                                                    
+                                                                                                        
                         # 1. Trigger Incremental K-mers
                         if run_kmer_calc and PARQUET_FILE and PARQUET_FILE.exists():
                             with st.spinner(f"🧬 Incrementally calculating {k_size}-mers for new sequences..."):
@@ -580,14 +586,22 @@ with tab2:
                                 if num_new_kmers > 0:
                                     st.success(f"✅ Added {num_new_kmers} new sequences to K-mer index!")
                         
-                        # 2. Trigger Incremental ORF Extraction
+                        # 2. 🚨 THE NEW ORF EXTRACTION BLOCK
                         if run_orf_calc and PARQUET_FILE and PARQUET_FILE.exists():
-                            with st.spinner(f"🧬 Extracting global ORFs for new sequences..."):
-                                orf_parquet_path, num_new_orfs = update_orf_database(PARQUET_FILE)
-                                if num_new_orfs > 0:
-                                    st.success(f"✅ Extracted and saved {num_new_orfs} new ORFs to the database!")
-                                else:
-                                    st.info("⚡ No new ORFs detected.")
+                            with st.spinner("🧬 Extracting global ORFs safely (Batches of 25)..."):
+                                # Ensure orf_parquet_path is a Path object so the HF upload block below doesn't break
+                                orf_parquet_path = Path("orf_database.parquet") 
+                                
+                                # Read the massive master database
+                                master_df = pd.read_parquet(PARQUET_FILE)
+                                
+                                # Run our new memory-safe script!
+                                safe_batch_orf_extractor(
+                                    master_df=master_df, 
+                                    orf_parquet_path=str(orf_parquet_path), 
+                                    batch_size=25, 
+                                    push_to_hf=upload_hf
+                                )
                         
                         # 3. Upload updated files to Hugging Face
                         if upload_hf:
@@ -599,6 +613,11 @@ with tab2:
                                 if run_orf_calc and 'orf_parquet_path' in locals() and orf_parquet_path.exists():
                                     push_to_huggingface(orf_parquet_path, orf_parquet_path.name)
                                 st.success("✅ Cloud Databases Synced Successfully!")
+                            # 🚨 FORCE STREAMLIT TO DUMP THE MASSIVE FILES FROM RAM
+                            import gc
+                            st.cache_data.clear()  # Clear Streamlit's temporary cache
+                            gc.collect()           # Force Python's Garbage Collector to empty the RAM
+                            st.balloons()
 
             # --- MANUAL CLOUD SYNC BLOCK ---
             with st.container(border=True):
@@ -633,7 +652,7 @@ with tab2:
                                 st.balloons()
                             except Exception as e:
                                 st.error(f"❌ Upload failed: {e}")
-                    
+
 
 # ==========================================
 # TAB 3: VIRTUAL PCR 
@@ -930,6 +949,15 @@ with tab7:
         
         with col_vis:
             st.markdown("#### 🔄 Circular Visualizer")
+            
+            # --- NEW: DYNAMIC ENZYME SELECTOR ---
+            common_enzymes = ["EcoRI", "BamHI", "HindIII", "XhoI", "NotI", "PstI", "SmaI", "SalI", "NdeI", "KpnI", "SacI"]
+            selected_enzymes = st.multiselect(
+                "✂️ Select Restriction Enzymes:", 
+                options=common_enzymes, 
+                default=["EcoRI", "BamHI"]
+            )
+            
             if len(selected_seq) > 0:
                 try:
                     # 1. Base Feature (The whole plasmid)
@@ -937,12 +965,18 @@ with tab7:
                         GraphicFeature(start=0, end=len(selected_seq), strand=+1, color="#cddc39", label="Backbone")
                     ]
                     
-                    # 2. Add Restriction Sites to make the map look professional
+                    # 2. Add Selected Restriction Sites dynamically
                     seq_obj = Seq(selected_seq)
-                    for site in Restriction.EcoRI.search(seq_obj):
-                        features.append(GraphicFeature(start=site-1, end=site, strand=+1, color="#ff4b4b", label="EcoRI"))
-                    for site in Restriction.BamHI.search(seq_obj):
-                        features.append(GraphicFeature(start=site-1, end=site, strand=+1, color="#2e66ff", label="BamHI"))
+                    # A nice palette to cycle through so each enzyme gets a unique color
+                    color_palette = ["#ff4b4b", "#2e66ff", "#00c241", "#ffa100", "#9c27b0", "#e91e63", "#00bcd4", "#795548"]
+                    
+                    for idx, enz_name in enumerate(selected_enzymes):
+                        enz_color = color_palette[idx % len(color_palette)]
+                        # Dynamically get the enzyme from Biopython
+                        if hasattr(Restriction, enz_name):
+                            enz_obj = getattr(Restriction, enz_name)
+                            for site in enz_obj.search(seq_obj):
+                                features.append(GraphicFeature(start=site-1, end=site, strand=+1, color=enz_color, label=enz_name))
 
                     # 3. Draw the Map
                     record = CircularGraphicRecord(sequence_length=len(selected_seq), features=features)
@@ -963,16 +997,18 @@ with tab7:
             
             if orf_path.exists():
                 try:
-                    df_orfs = pd.read_parquet(orf_path)
-                    
-                    # Filter for only the selected plasmid
-                    plasmid_orfs = df_orfs[df_orfs['Accession'].astype(str) == str(selected_plasmid_id)]
+                    # 🚨 MAGIC TRICK: Use PyArrow filters to ONLY load the rows we need from the disk!
+                    # This uses ~1 MB of RAM instead of 600 MB!
+                    plasmid_orfs = pd.read_parquet(
+                        orf_path, 
+                        filters=[('Accession', '==', str(selected_plasmid_id))]
+                    )
                     
                     if not plasmid_orfs.empty:
                         # Display a clean table of the ORFs
                         st.dataframe(
                             plasmid_orfs[['Start', 'End', 'Strand', 'Length']].sort_values(by="Length", ascending=False), 
-                            use_container_width=True, 
+                            width='stretch', 
                             hide_index=True,
                             height=350 # Locks the height so it aligns nicely next to the circle
                         )
@@ -1006,7 +1042,7 @@ with tab7:
                 same_host_df = full_sim[full_sim['Organism'] == selected_host].head(5)
                 if not same_host_df.empty:
                     st.dataframe(same_host_df[['Accession', 'Country', 'Similarity Score']], 
-                                 use_container_width=True, hide_index=True)
+                                 width='stretch', hide_index=True)
                 else:
                     st.info("No close relatives found in the same species.")
 
@@ -1017,7 +1053,7 @@ with tab7:
                 diff_host_df = full_sim[full_sim['Organism'] != selected_host].head(10)
                 if not diff_host_df.empty:
                     st.dataframe(diff_host_df[['Accession', 'Organism', 'Country', 'Similarity Score']], 
-                                 use_container_width=True, hide_index=True)
+                                 width='stretch', hide_index=True)
                     st.caption("🚨 High similarity in different species suggests potential Horizontal Gene Transfer (HGT).")
                 else:
                     st.info("No cross-species relatives detected in current database.")
@@ -1118,7 +1154,7 @@ with tab8:
                 res_df = res_df[res_df['Accession'].str.contains(search_query, case=False) | 
                                 res_df['Organism'].str.contains(search_query, case=False)]
             
-            st.dataframe(res_df[['Accession', 'Organism', 'Length', 'Identity']], use_container_width=True)
+            st.dataframe(res_df[['Accession', 'Organism', 'Length', 'Identity']], width='stretch')
             
             if st.button("🌐 Identify Top 5 Longest Genes via NCBI"):
                 # BLASTing a whole database is too slow for Streamlit, 
