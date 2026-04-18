@@ -3,8 +3,7 @@ title: Plaskmer
 emoji: 🧬
 colorFrom: blue
 colorTo: green
-sdk: streamlit
-app_file: scripts/app.py
+sdk: docker
 pinned: false
 ---
 # plaskmer
