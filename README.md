@@ -3,7 +3,6 @@ title: Plaskmer
 emoji: 🧬
 colorFrom: blue
 colorTo: green
-sdk: streamlit
 app_file: scripts/app.py
 pinned: false
 ---
