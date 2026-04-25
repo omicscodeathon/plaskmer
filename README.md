@@ -3,9 +3,13 @@ title: Plaskmer
 emoji: 🧬
 colorFrom: blue
 colorTo: green
-app_file: scripts/app.py
+sdk: streamlit
+app_file: app.py
 pinned: false
 ---
+
+# Plaskmer
+(You can put the rest of your normal README text down here...)
 # plaskmer
 Building an African Plasmid and mRNA Databank with K-mer-Based Search
 # Overview
