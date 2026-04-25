@@ -10,10 +10,16 @@ jobs:
     steps:
       - uses: actions/checkout@v3
         with:
-          fetch-depth: 0
           lfs: true
       - name: Push to hub
         env:
           HF_TOKEN: ${{ secrets.HF_PLASKMER }}
-        # 🚨 CHANGE THE LINK BELOW to match your actual Hugging Face username and Space name
-        run: git push --force https://Jeffiq:$HF_TOKEN@huggingface.co/spaces/Jeffiq/Plaskmer main
+        run: |
+          rm -rf .git
+          git config --global user.email "github-actions@github.com"
+          git config --global user.name "GitHub Actions"
+          git init
+          git branch -m main
+          git add .
+          git commit -m "Force sync latest files"
+          git push --force https://Jeffiq:$HF_TOKEN@huggingface.co/spaces/Jeffiq/Plaskmer main
