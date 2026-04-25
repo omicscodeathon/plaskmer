@@ -5,10 +5,12 @@ from Bio.Seq import Seq
 from Bio import Entrez
 import config
 import streamlit as st
+import os
 
 if 'user_email' in st.session_state and st.session_state.user_email:
     from Bio import Entrez
     Entrez.email = st.session_state.user_email
+    Entrez.api_key = os.getenv("NCBI_API_KEY")
 
 
     

@@ -3,9 +3,11 @@ from Bio import Entrez
 from Bio import SeqIO
 import pandas as pd
 import streamlit as st
+import os
+import time
 
-# VERY IMPORTANT: NCBI requires an email address to use their API
-Entrez.email = "methajefferson@gmail.com"  # <--- CHANGE THIS TO YOUR EMAIL
+# We DO NOT set Entrez.email here at the top. It crashes the app.
+
 
 def fetch_official_genes(accession_id):
     """
@@ -13,7 +15,18 @@ def fetch_official_genes(accession_id):
     and extracts the official gene names and coordinates.
     """
     try:
+        # 0. Safely grab the email and API key right before we make the call
+        if 'user_email' in st.session_state and st.session_state.user_email:
+            Entrez.email = st.session_state.user_email
+        else:
+            Entrez.email = "default_plaskmer@example.com" # Fallback just in case
+            
+        if os.getenv("NCBI_API_KEY"):
+            Entrez.api_key = os.getenv("NCBI_API_KEY")
+
         # 1. Fetch the GenBank (.gb) file from NCBI
+        time.sleep(0.35) # Respect NCBI 429 limits
+            
         handle = Entrez.efetch(db="nucleotide", id=accession_id, rettype="gb", retmode="text")
         record = SeqIO.read(handle, "genbank")
         handle.close()
