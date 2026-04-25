@@ -30,11 +30,10 @@ import gc
 from orf_processor import safe_batch_orf_extractor
 
 # ---> 🟢 ADD THIS NEW CODE BLOCK HERE <---
-@st.cache_data(max_entries=1)
-def load_cached_database(filepath):
+@st.cache_data(max_entries=2)
+def load_cached_database(filepath, cols=None):
     """Loads massive Parquet files safely into memory ONLY ONCE."""
-    print(f"Loading {filepath} into RAM...")
-    return pd.read_parquet(filepath)
+    return pd.read_parquet(filepath, columns=cols)
 # ---> 🟢 END OF NEW CODE BLOCK <---
 
 #Global download logic
@@ -974,7 +973,8 @@ with tab7:
     selected_diff = pd.DataFrame()
     
     if PARQUET_FILE and PARQUET_FILE.exists():
-        df_meta = pd.read_parquet(PARQUET_FILE, columns=["Accession", "Sequence", "Organism", "Country", "Type"])
+        # 🟢 CHANGED: Now using the cached function to prevent RAM crashes!
+        df_meta = load_cached_database(PARQUET_FILE, cols=["Accession", "Sequence", "Organism", "Country", "Type"])
         
         # Robust filtering
         df_plasmids_only = df_meta[
@@ -1172,8 +1172,8 @@ with tab8:
     st.markdown("<h3 class='The-subheader'>Global Gene Extraction (Open Reading Frames)</h3>", unsafe_allow_html=True)
     
     if PARQUET_FILE and PARQUET_FILE.exists():
-        # Load full metadata for filtering
-        df_all = pd.read_parquet(PARQUET_FILE, columns=["Accession", "Organism", "Type", "Sequence"])
+        # 🟢 CHANGED: Load full metadata for filtering using the memory cache!
+        df_all = load_cached_database(PARQUET_FILE, cols=["Accession", "Organism", "Type", "Sequence"])
         
         # --- BATCH FILTERS ---
         st.markdown("#### 🛠️ Batch Processing Filters")
