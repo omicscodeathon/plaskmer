@@ -40,7 +40,7 @@ Plaskmer utilizes a normalized $k$-mer frequency distribution model ($k=3$ to $k
 ---
 
 ## 🚀 Quick Start (Hugging Face)
-Access the live dashboard here: **[Plaskmer on Hugging Face](https://huggingface.co/spaces/Jeffiq/Plaskmer)**
+Access the live dashboard here: **[Plaskmer on Hugging Face](https://jeffiq-plaskmer.hf.space/)**
 
 1. **Harvester Tab:** Fetch data directly from NCBI to populate the local databank.
 2. **Analysis Tab:** Visualize the K-mer frequency differences between chromosomal and plasmid DNA.
