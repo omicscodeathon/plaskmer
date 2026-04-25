@@ -1120,49 +1120,56 @@ with tab7:
                 st.error(f"Similarity Engine Error: {error}")
                 
         # ==========================================
-        # UNIVERSAL DOWNLOAD CART
+        # UNIVERSAL DOWNLOAD CART (Updated to include Main Sequence)
         # ==========================================
         st.markdown("---")
         st.markdown("### 📥 Plasmid Hub Universal Cart")
         
-        total_selected = len(selected_orfs) + len(selected_same) + len(selected_diff)
+        # 🟢 NEW: Always include the main selected sequence in the count
+        # total_selected is now Main + any checked boxes
+        total_selected = 1 + len(selected_orfs) + len(selected_same) + len(selected_diff)
         
-        if total_selected > 0:
-            fasta_out = io.StringIO()
+        fasta_out = io.StringIO()
+        
+        # 1. ALWAYS Add the Main Selected Sequence first
+        fasta_out.write(f">{selected_plasmid_id}_MAIN_SEQUENCE\n{selected_seq}\n")
+        
+        # 2. Add selected ORFs
+        for _, row in selected_orfs.iterrows():
+            fasta_out.write(f">{row['Accession']}_Extracted_ORF\n{row.get('Sequence', '')}\n")
             
-            # Combine all selected into one FASTA string
-            for _, row in selected_orfs.iterrows():
-                fasta_out.write(f">{row['Accession']}_Extracted_ORF\n{row.get('Sequence', '')}\n")
-                
-            for _, row in selected_same.iterrows():
-                fasta_out.write(f">{row['Accession']}_Internal_Relative\n{row.get('Sequence', '')}\n")
-                
-            for _, row in selected_diff.iterrows():
-                fasta_out.write(f">{row['Accession']}_CrossSpecies_Relative\n{row.get('Sequence', '')}\n")
-                
-            data_bytes = fasta_out.getvalue().encode('utf-8')
+        # 3. Add selected Internal Relatives
+        for _, row in selected_same.iterrows():
+            fasta_out.write(f">{row['Accession']}_Internal_Relative\n{row.get('Sequence', '')}\n")
             
-            # Compress if it's large
-            ext = "fasta"
-            if len(data_bytes) > 1024 * 1024:
-                import gzip
-                buf = io.BytesIO()
-                with gzip.GzipFile(fileobj=buf, mode='wb') as f:
-                    f.write(data_bytes)
-                data_bytes = buf.getvalue()
-                ext = "fasta.gz"
-                
-            st.success(f"🛒 **{total_selected}** sequences packed and ready for extraction.")
-            st.download_button(
-                label="📥 Download Universal FASTA",
-                data=data_bytes,
-                file_name=f"Plasmid_Intelligence_Cart.{ext}",
-                type="primary"
-            )
-        else:
-            st.info("💡 **Tip:** Check the `Select` boxes in ANY of the 3 tables above. They will combine here into a single, clean FASTA file for external analysis!")
-    else:
-        st.warning("⚠️ Database missing.")
+        # 4. Add selected Cross-Species Relatives
+        for _, row in selected_diff.iterrows():
+            fasta_out.write(f">{row['Accession']}_CrossSpecies_Relative\n{row.get('Sequence', '')}\n")
+            
+        data_bytes = fasta_out.getvalue().encode('utf-8')
+        
+        # Compression logic
+        ext = "fasta"
+        if len(data_bytes) > 1024 * 1024:
+            import gzip
+            buf = io.BytesIO()
+            with gzip.GzipFile(fileobj=buf, mode='wb') as f:
+                f.write(data_bytes)
+            data_bytes = buf.getvalue()
+            ext = "fasta.gz"
+            
+        # The button is now ALWAYS active because the Main Sequence is always included
+        st.success(f"🛒 **{total_selected}** sequences packed (Main Sequence + {total_selected-1} selections).")
+        st.download_button(
+            label="📥 Download Universal FASTA",
+            data=data_bytes,
+            file_name=f"PlasKmer_Selection_{selected_plasmid_id}.{ext}",
+            type="primary",
+            use_container_width=True
+        )
+        
+        if total_selected == 1:
+            st.info("💡 **Tip:** You are currently downloading the **Main Sequence**. Check the boxes in the tables above to add ORFs or Relatives to this download package!")
         
 # ==========================================
 # TAB 8: GLOBAL GENE & PROTEIN VAULT (Batch Mode)
