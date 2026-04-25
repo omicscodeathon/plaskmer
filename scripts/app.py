@@ -29,6 +29,16 @@ import gc
 # Add this right here with your other imports!
 from orf_processor import safe_batch_orf_extractor
 
+# ---> 🟢 ADD THIS NEW CODE BLOCK HERE <---
+@st.cache_data(max_entries=1)
+def load_cached_database(filepath):
+    """Loads massive Parquet files safely into memory ONLY ONCE."""
+    print(f"Loading {filepath} into RAM...")
+    return pd.read_parquet(filepath)
+# ---> 🟢 END OF NEW CODE BLOCK <---
+
+#Global download logic
+def handle_table_downloads(df, id_col, seq_col, filename_prefix):
 
 #Global download logic
 def handle_table_downloads(df, id_col, seq_col, filename_prefix):
