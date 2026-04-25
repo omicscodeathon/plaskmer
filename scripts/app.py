@@ -38,9 +38,6 @@ def load_cached_database(filepath, cols=None):
 
 #Global download logic
 def handle_table_downloads(df, id_col, seq_col, filename_prefix):
-
-#Global download logic
-def handle_table_downloads(df, id_col, seq_col, filename_prefix):
     display_df = df.copy()
     display_df.insert(0, "Select", False)
     display_df["NCBI_Link"] = "https://www.ncbi.nlm.nih.gov/search/all/?term=" + display_df[id_col].astype(str)
