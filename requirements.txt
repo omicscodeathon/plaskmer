@@ -1,0 +1,14 @@
+streamlit
+pandas
+biopython
+huggingface_hub
+regex
+python-dotenv
+scikit-learn
+numpy
+plotly
+bokeh
+dna_features_viewer
+matplotlib
+fastparquet
+pyarrow
