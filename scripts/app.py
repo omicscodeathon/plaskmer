@@ -51,6 +51,8 @@ def handle_table_downloads(df, id_col, seq_col, filename_prefix):
     selected_data = edited_df[edited_df["Select"] == True]
     if not selected_data.empty:
         if st.button(f"📥 Download {len(selected_data)} Selected"):
+            import io
+            import gzip
             fasta_out = io.StringIO()
             for _, row in selected_data.iterrows():
                 # Get the DNA from the table column
