@@ -16,6 +16,7 @@ import streamlit as st # Add this at the top
 
 # NEW LOGIC: Pull from the user's browser session, not your config
 user_email = st.session_state.get('user_email')
+Entrez.api_key = os.getenv("NCBI_API_KEY")
 if user_email:
     Entrez.email = user_email
 

@@ -1,5 +1,7 @@
 import streamlit as st
 import pandas as pd
+import io
+import gzip
 import os
 import time
 from pathlib import Path
@@ -28,10 +30,43 @@ import gc
 from orf_processor import safe_batch_orf_extractor
 
 
+#Global download logic
+def handle_table_downloads(df, id_col, seq_col, filename_prefix):
+    display_df = df.copy()
+    display_df.insert(0, "Select", False)
+    display_df["NCBI_Link"] = "https://www.ncbi.nlm.nih.gov/search/all/?term=" + display_df[id_col].astype(str)
+    
+    edited_df = st.data_editor(
+        display_df,
+        column_config={"Select": st.column_config.CheckboxColumn(required=True), "NCBI_Link": st.column_config.LinkColumn("View on NCBI")},
+        hide_index=True, width='stretch', key=f"editor_{filename_prefix}"
+    )
+    
+    selected_data = edited_df[edited_df["Select"] == True]
+    if not selected_data.empty:
+        if st.button(f"📥 Download {len(selected_data)} Selected"):
+            fasta_out = io.StringIO()
+            for _, row in selected_data.iterrows():
+                # Get the DNA from the table column
+                dna_seq = str(row.get(seq_col, "DNA_SEQUENCE_NOT_FOUND"))
+                fasta_out.write(f">{row[id_col]}\n{dna_seq}\n")
+            
+            data_bytes = fasta_out.getvalue().encode('utf-8')
+            # Handle compression for large files
+            ext = "fasta"
+            if len(data_bytes) > 1024 * 1024:
+                buf = io.BytesIO()
+                with gzip.GzipFile(fileobj=buf, mode='wb') as f:
+                    f.write(data_bytes)
+                data_bytes = buf.getvalue()
+                ext = "fasta.gz"
+            
+            st.download_button("Click to Save Nucleotide File", data_bytes, f"{filename_prefix}.{ext}")
+
 # Load local .env file
 load_dotenv()
 import warnings
-warnings.filterwarnings("ignore", message="The library used by the \*country names\* `locationmode` option is changing")
+warnings.filterwarnings("ignore", message=r"The library used by the \*country names\* `locationmode` option is changing")
 
 # --- PATH CONFIGURATION (PARQUET ENGINE) ---
 # --- PATH CONFIGURATION (PARQUET ENGINE) ---
@@ -463,7 +498,12 @@ with tab1:
                     st.success(f"Top {len(results)} Matches Found!")
                     best_match = results.iloc[0]
                     st.metric("Top Match Score", f"{best_match['Similarity Score']:.4f}")
-                    st.table(results)
+                    # Use the new download logic. 
+                    # Assumes your find_closest_matches returns an 'Accession' and 'Sequence' column.
+                    if 'Sequence' in results.columns:
+                        handle_table_downloads(results, "Accession", "Sequence", "kmer_matches")
+                    else:
+                        st.dataframe(results) # Fallback if sequence column isn't returned
 
 
 # ==========================================
@@ -505,6 +545,7 @@ with tab2:
                     # INJECT EMAIL JUST IN CASE
                     from Bio import Entrez
                     Entrez.email = st.session_state.user_email
+                    Entrez.api_key = os.getenv("NCBI_API_KEY")
                     
                     if PARQUET_FILE and PARQUET_FILE.exists():
                         with st.spinner("Analyzing existing records... this may take a few minutes."):
@@ -911,10 +952,16 @@ with tab6:
         """)
 
 # ==========================================
+# ==========================================
 # TAB 7: PLASMID INTELLIGENCE HUB (Multi-Table View)
 # ==========================================
 with tab7:
     st.markdown("<h3 class='The-subheader'>Whole Plasmid Analytics & Cross-Species Intelligence</h3>", unsafe_allow_html=True)
+    
+    # Initialize empty dataframes to hold selections so the app doesn't crash
+    selected_orfs = pd.DataFrame()
+    selected_same = pd.DataFrame()
+    selected_diff = pd.DataFrame()
     
     if PARQUET_FILE and PARQUET_FILE.exists():
         df_meta = pd.read_parquet(PARQUET_FILE, columns=["Accession", "Sequence", "Organism", "Country", "Type"])
@@ -960,25 +1007,17 @@ with tab7:
             
             if len(selected_seq) > 0:
                 try:
-                    # 1. Base Feature (The whole plasmid)
-                    features = [
-                        GraphicFeature(start=0, end=len(selected_seq), strand=+1, color="#cddc39", label="Backbone")
-                    ]
-                    
-                    # 2. Add Selected Restriction Sites dynamically
+                    features = [GraphicFeature(start=0, end=len(selected_seq), strand=+1, color="#cddc39", label="Backbone")]
                     seq_obj = Seq(selected_seq)
-                    # A nice palette to cycle through so each enzyme gets a unique color
                     color_palette = ["#ff4b4b", "#2e66ff", "#00c241", "#ffa100", "#9c27b0", "#e91e63", "#00bcd4", "#795548"]
                     
                     for idx, enz_name in enumerate(selected_enzymes):
                         enz_color = color_palette[idx % len(color_palette)]
-                        # Dynamically get the enzyme from Biopython
                         if hasattr(Restriction, enz_name):
                             enz_obj = getattr(Restriction, enz_name)
                             for site in enz_obj.search(seq_obj):
                                 features.append(GraphicFeature(start=site-1, end=site, strand=+1, color=enz_color, label=enz_name))
 
-                    # 3. Draw the Map
                     record = CircularGraphicRecord(sequence_length=len(selected_seq), features=features)
                     fig, ax = plt.subplots(figsize=(5, 5))
                     record.plot(ax=ax)
@@ -990,28 +1029,30 @@ with tab7:
             
         with col_orf:
             st.markdown("#### 🧬 Sequence ORFs")
-            
-            # Look for the global ORF database
             orf_filename = "orf_database.parquet"
             orf_path = find_database_file(orf_filename) or (SCRIPT_DIR / orf_filename)
             
             if orf_path.exists():
                 try:
-                    # 🚨 MAGIC TRICK: Use PyArrow filters to ONLY load the rows we need from the disk!
-                    # This uses ~1 MB of RAM instead of 600 MB!
-                    plasmid_orfs = pd.read_parquet(
-                        orf_path, 
-                        filters=[('Accession', '==', str(selected_plasmid_id))]
-                    )
-                    
+                    plasmid_orfs = pd.read_parquet(orf_path, filters=[('Accession', '==', str(selected_plasmid_id))])
                     if not plasmid_orfs.empty:
-                        # Display a clean table of the ORFs
-                        st.dataframe(
-                            plasmid_orfs[['Start', 'End', 'Strand', 'Length']].sort_values(by="Length", ascending=False), 
-                            width='stretch', 
-                            hide_index=True,
-                            height=350 # Locks the height so it aligns nicely next to the circle
-                        )
+                        if 'SRA' in plasmid_orfs.columns:
+                            plasmid_orfs = plasmid_orfs.drop(columns=['SRA'])
+                        
+                        # 🚨 FIX: Remove the useless "Sequence" and keep the true "ORF_Sequence"
+                        if 'ORF_Sequence' in plasmid_orfs.columns:
+                            if 'Sequence' in plasmid_orfs.columns:
+                                plasmid_orfs = plasmid_orfs.drop(columns=['Sequence'])
+                            # Rename it to Sequence so the downloader handles it smoothly
+                            plasmid_orfs = plasmid_orfs.rename(columns={'ORF_Sequence': 'Sequence'})
+                        
+                        # Prep for universal download
+                        plasmid_orfs.insert(0, "Select", False)
+                        plasmid_orfs["NCBI_Link"] = "https://www.ncbi.nlm.nih.gov/search/all/?term=" + plasmid_orfs["Accession"].astype(str)
+                        
+                        edited_orfs = st.data_editor(plasmid_orfs.sort_values(by="Length", ascending=False), hide_index=True, key="orfs_editor")
+                        selected_orfs = edited_orfs[edited_orfs["Select"] == True]
+                        
                         st.caption(f"Found **{len(plasmid_orfs)}** ORFs. Showing longest first.")
                     else:
                         st.info("No ORFs extracted for this sequence yet. Go to Tab 2 and run the Maintenance scan!")
@@ -1022,7 +1063,6 @@ with tab7:
 
         st.markdown("---")
 
-        
         # --- THE TWO TABLES: COMPARATIVE INTELLIGENCE ---
         st.markdown("### 🌍 Comparative Intelligence Analysis")
         
@@ -1033,7 +1073,7 @@ with tab7:
                 sim_results['Sequence ID'] = sim_results['Sequence ID'].astype(str)
                 df_meta['Accession'] = df_meta['Accession'].astype(str)
                 
-                full_sim = pd.merge(sim_results, df_meta[['Accession', 'Organism', 'Country']], 
+                full_sim = pd.merge(sim_results, df_meta[['Accession', 'Organism', 'Country', 'Sequence']], 
                                     left_on='Sequence ID', right_on='Accession')
                 full_sim = full_sim[full_sim['Accession'] != selected_plasmid_id]
 
@@ -1041,8 +1081,13 @@ with tab7:
                 st.markdown(f"#### 🔍 1. Relatives within **{selected_host}**")
                 same_host_df = full_sim[full_sim['Organism'] == selected_host].head(5)
                 if not same_host_df.empty:
-                    st.dataframe(same_host_df[['Accession', 'Country', 'Similarity Score']], 
-                                 width='stretch', hide_index=True)
+                    if 'SRA' in same_host_df.columns:
+                        same_host_df = same_host_df.drop(columns=['SRA'])
+                    same_host_df.insert(0, "Select", False)
+                    same_host_df["NCBI_Link"] = "https://www.ncbi.nlm.nih.gov/search/all/?term=" + same_host_df["Accession"].astype(str)
+                    
+                    edited_same = st.data_editor(same_host_df, hide_index=True, key="same_editor")
+                    selected_same = edited_same[edited_same["Select"] == True]
                 else:
                     st.info("No close relatives found in the same species.")
 
@@ -1052,17 +1097,63 @@ with tab7:
                 st.markdown("#### 🚀 2. Cross-Species Relatives (Potential Host Jumps)")
                 diff_host_df = full_sim[full_sim['Organism'] != selected_host].head(10)
                 if not diff_host_df.empty:
-                    st.dataframe(diff_host_df[['Accession', 'Organism', 'Country', 'Similarity Score']], 
-                                 width='stretch', hide_index=True)
+                    if 'SRA' in diff_host_df.columns:
+                        diff_host_df = diff_host_df.drop(columns=['SRA'])
+                    diff_host_df.insert(0, "Select", False)
+                    diff_host_df["NCBI_Link"] = "https://www.ncbi.nlm.nih.gov/search/all/?term=" + diff_host_df["Accession"].astype(str)
+
+                    edited_diff = st.data_editor(diff_host_df, hide_index=True, key="diff_editor")
+                    selected_diff = edited_diff[edited_diff["Select"] == True]
                     st.caption("🚨 High similarity in different species suggests potential Horizontal Gene Transfer (HGT).")
                 else:
                     st.info("No cross-species relatives detected in current database.")
             else:
                 st.error(f"Similarity Engine Error: {error}")
+                
+        # ==========================================
+        # UNIVERSAL DOWNLOAD CART
+        # ==========================================
+        st.markdown("---")
+        st.markdown("### 📥 Plasmid Hub Universal Cart")
+        
+        total_selected = len(selected_orfs) + len(selected_same) + len(selected_diff)
+        
+        if total_selected > 0:
+            fasta_out = io.StringIO()
+            
+            # Combine all selected into one FASTA string
+            for _, row in selected_orfs.iterrows():
+                fasta_out.write(f">{row['Accession']}_Extracted_ORF\n{row.get('Sequence', '')}\n")
+                
+            for _, row in selected_same.iterrows():
+                fasta_out.write(f">{row['Accession']}_Internal_Relative\n{row.get('Sequence', '')}\n")
+                
+            for _, row in selected_diff.iterrows():
+                fasta_out.write(f">{row['Accession']}_CrossSpecies_Relative\n{row.get('Sequence', '')}\n")
+                
+            data_bytes = fasta_out.getvalue().encode('utf-8')
+            
+            # Compress if it's large
+            ext = "fasta"
+            if len(data_bytes) > 1024 * 1024:
+                import gzip
+                buf = io.BytesIO()
+                with gzip.GzipFile(fileobj=buf, mode='wb') as f:
+                    f.write(data_bytes)
+                data_bytes = buf.getvalue()
+                ext = "fasta.gz"
+                
+            st.success(f"🛒 **{total_selected}** sequences packed and ready for extraction.")
+            st.download_button(
+                label="📥 Download Universal FASTA",
+                data=data_bytes,
+                file_name=f"Plasmid_Intelligence_Cart.{ext}",
+                type="primary"
+            )
+        else:
+            st.info("💡 **Tip:** Check the `Select` boxes in ANY of the 3 tables above. They will combine here into a single, clean FASTA file for external analysis!")
     else:
         st.warning("⚠️ Database missing.")
-
-
         
 # ==========================================
 # TAB 8: GLOBAL GENE & PROTEIN VAULT (Batch Mode)
@@ -1125,12 +1216,16 @@ with tab8:
                             dna_len = len(actual_protein) * 3
                             
                             if dna_len >= min_gene_len:
+                                # EXTRACTION MATH: Slice the original DNA sequence instead of using the protein string
+                                start_bp = (curr_pos + start_idx) * 3
+                                dna_seq = str(nuc)[start_bp : start_bp + dna_len]
+                                
                                 all_discovered_orfs.append({
                                     "Accession": acc,
                                     "Organism": row['Organism'],
-                                    "Start (bp)": (curr_pos + start_idx) * 3,
+                                    "Start (bp)": start_bp,
                                     "Length": dna_len,
-                                    "Protein": actual_protein,
+                                    "Sequence": dna_seq,  # <-- CHANGED FROM 'Protein' TO 'Sequence' (Pure DNA)
                                     "Identity": "Not Identified"
                                 })
                         curr_pos += len(p) + 1
@@ -1153,8 +1248,12 @@ with tab8:
             if search_query:
                 res_df = res_df[res_df['Accession'].str.contains(search_query, case=False) | 
                                 res_df['Organism'].str.contains(search_query, case=False)]
-            
-            st.dataframe(res_df[['Accession', 'Organism', 'Length', 'Identity']], width='stretch')
+                        # Remove SRA if present
+            if 'SRA' in res_df.columns:
+                res_df = res_df.drop(columns=['SRA'])
+                
+            # Render the interactive table using the pure DNA 'Sequence' column
+            handle_table_downloads(res_df, "Accession", "Sequence", "plaskmer_orfs")
             
             if st.button("🌐 Identify Top 5 Longest Genes via NCBI"):
                 # BLASTing a whole database is too slow for Streamlit, 

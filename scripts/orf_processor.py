@@ -26,47 +26,55 @@ def push_to_huggingface(file_path, filename):
 
 # --- HELPER: BIOPYTHON ORF FINDER ---
 def extract_orfs_from_sequence(sequence, accession, min_protein_len=100):
-    """Scans all 6 reading frames to find open reading frames (genes)."""
+    """Scans all 6 reading frames to find DNA Nucleotide ORF sequences."""
     orfs = []
+    from Bio.Seq import Seq
     seq_obj = Seq(sequence)
     
     # Check both forward (+1) and reverse (-1) strands
     for strand, nuc in [(+1, seq_obj), (-1, seq_obj.reverse_complement())]:
         for frame in range(3):
-            # Translate DNA to Protein using Bacterial table (11)
+            # Internal translation just to FIND the Start (M) and Stop (*) codons
             trans = str(nuc[frame:].translate(table=11))
             aa_start = 0
             
             while aa_start < len(trans):
-                aa_start = trans.find("M", aa_start) # Look for Start Codon (Methionine)
+                aa_start = trans.find("M", aa_start) 
                 if aa_start == -1: break
                 
-                aa_end = trans.find("*", aa_start)   # Look for Stop Codon
+                aa_end = trans.find("*", aa_start)   
                 if aa_end == -1: break
                 
-                # If the gene is long enough, save it
+                # Check if it meets your minimum length requirement
                 if (aa_end - aa_start) >= min_protein_len:
-                    protein_seq = trans[aa_start:aa_end]
+                    # DNA length = (AA length * 3) + 3 for the stop codon
+                    dna_len = ((aa_end - aa_start) * 3) + 3
                     
-                    # Calculate exact DNA positions for the visualizer
+                    # Slicing the actual Nucleotide DNA
                     if strand == 1:
                         start_nuc = frame + (aa_start * 3)
-                        end_nuc = start_nuc + len(protein_seq) * 3 + 3
+                        end_nuc = start_nuc + dna_len
+                        orf_dna = str(seq_obj[start_nuc:end_nuc])
                     else:
-                        end_nuc = len(seq_obj) - (frame + (aa_start * 3))
-                        start_nuc = end_nuc - len(protein_seq) * 3 - 3
+                        # Slice from reverse complement and handle coordinates
+                        rev_start = frame + (aa_start * 3)
+                        rev_end = rev_start + dna_len
+                        orf_dna = str(seq_obj.reverse_complement()[rev_start:rev_end])
+                        
+                        # Forward coordinates for the visualizer
+                        end_nuc = len(seq_obj) - rev_start
+                        start_nuc = end_nuc - dna_len
                     
                     orfs.append({
                         'Accession': str(accession),
                         'Start': start_nuc,
                         'End': end_nuc,
-                        'Strand': strand,
-                        'Length': len(protein_seq),
-                        'Protein': protein_seq
+                        'Strand': strand,  # FIXED: Matches old database format (1 or -1)
+                        'Length': len(orf_dna),
+                        'Sequence': orf_dna # <-- SAVING THE DNA NUCLEOTIDES
                     })
                 aa_start = aa_end + 1
     return orfs
-
 
 # --- MAIN ENGINE: BATCH AND FLUSH ---
 def safe_batch_orf_extractor(master_df, orf_parquet_path, batch_size=25, push_to_hf=True):
