@@ -13,7 +13,10 @@ pinned: false
 # plaskmer
 Building an African Plasmid and mRNA Databank with K-mer-Based Search
 # Overview
-Plaskmer is a bioinformatics framework designed to facilitate the creation of a specialized genomic databank focused on African microbial diversity. By combining automated data harvesting from NCBI with alignment-free K-mer frequency analysis, Plaskmer allows researchers to rapidly identify and categorize genetic elements (Plasmids and mRNA/ORFs) from environmental and clinical samples across the continent.
+Africa remains significantly underrepresented in global microbial genomic databases, limiting effective surveillance of infectious diseases and antimicrobial resistance (AMR). This gap is particularly evident in high-burden diseases such as cholera, caused by Vibrio cholerae, which continues to drive recurrent outbreaks across the continent.
+A major driver of Vibrio cholerae evolution is horizontal gene transfer via plasmids and other mobile genetic elements, enabling rapid dissemination of virulence and antimicrobial resistance determinants. However, conventional homology-based tools often fail to detect novel or highly divergent sequences, leaving substantial genomic diversity uncharacterized.
+Plaskmer is an alignment-free, k-mer based bioinformatics framework designed to address this limitation by enabling reference-independent classification of plasmid and chromosomal sequences. It builds an Africa-focused plasmid and mRNA database starting with Vibrio cholerae, supporting improved genomic surveillance and AMR tracking.
+
 
 ---
 
